@@ -25,7 +25,25 @@ public class ConfigDataProvider {
 		}
 	}
 
+//	public String getReportLocation() {
+//		return properties.getProperty(TestConstants.PROP_TEST_REPORT_FOLDER);
+//	}
 	public String getReportLocation() {
-		return properties.getProperty(TestConstants.PROP_TEST_REPORT_FOLDER);
+	    String folder = System.getProperty(TestConstants.PROP_TEST_REPORT_FOLDER);
+	    if (folder != null && !folder.isEmpty()) {
+	        return folder;
+	    }
+
+	    // default from properties
+	    folder = properties.getProperty(TestConstants.PROP_TEST_REPORT_FOLDER);
+
+	    // if running inside docker (Linux), override to /app/reports
+	    if (System.getProperty("os.name").toLowerCase().contains("linux")) {
+	        return "/app/reports";
+	    }
+
+	    // local fallback (Windows)
+	    return folder != null ? folder : "reports";
 	}
+
 }

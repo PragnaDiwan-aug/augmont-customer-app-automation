@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  appium-tests:
+    image: my-appium-image
+    stdin_open: true
+    tty: true
+    working_dir: /app
+    command: >
+      mvn clean test
+    volumes:
+      - ./reports:/app/reports
+      - ./test-output:/app/test-output
