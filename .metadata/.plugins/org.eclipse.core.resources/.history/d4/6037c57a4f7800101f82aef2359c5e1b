@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+	<listeners>
+		<listener
+			class-name="com.augmont.utility.AnnotationTransformer"></listener>
+	</listeners>
+	<test name="purchaseGold">
+		
+        <parameter name="PG" value="RazorPay"/>
+
+			<classes>
+      <class name="com.augmont.test.basetestcases.PurchaseGold">
+      
+   <methods>
+<!--       	    	  <include name="buyGold_ValidateOrder_TC001"/>
+      	    	  <include name="buyGold_ValidateOrder_TC002"/>
+      	    	  <include name="buyGold_ValidateOrder_TC003"/>   
+   	    	 	 <include name="buyGold_ValidateOrder_TC004"/>-->
+      	    	  <include name="buyGold_ValidateOrder_TC005"/> 
+            	  <!-- <include name="buyGold_ValidateOrder_TC006"/>-->
+   
+   
+   </methods>
+  </class>
+		</classes>
+
+
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

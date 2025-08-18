@@ -1,0 +1,193 @@
+package com.augmont.api;
+
+import org.json.simple.JSONObject;
+import org.testng.Assert;
+import org.testng.Reporter;
+import org.testng.annotations.Test;
+
+import com.augmont.base.BaseTest;
+import io.restassured.RestAssured;
+import io.restassured.http.Method;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class GoldPurchaseAPI extends BaseTest {
+
+	
+    public void Base_URI() {
+        RestAssured.baseURI = BaseURI;
+        Reporter.log("Base URI is : "+BaseURI,true);
+     }
+     
+
+	
+    public String getToken(String requestUri) {
+
+        extentTestChild = extentTest.createNode("Get Token");
+        extentTestChild.info("Sending token request...");
+
+        String token = null;
+
+        try {
+            // Step 1: Prepare request
+            RequestSpecification httpRequest = RestAssured.given();
+
+            // Step 2: Construct JSON body
+            JSONObject requestParams = new JSONObject();
+            requestParams.put("pin", "123456");
+            requestParams.put("verifyByPin", true);
+            requestParams.put("mobileNumber", "8141143966");
+            requestParams.put("deviceId", null);  // Optional
+
+            Reporter.log("Request body: " + requestParams.toJSONString(), true);
+            extentTestChild.info("Request body: " + requestParams.toJSONString());
+
+            httpRequest.header("Content-Type", "application/json");
+            httpRequest.body(requestParams.toJSONString());
+
+            // Step 3: Send POST request
+            Response response = httpRequest.request(Method.POST, requestUri);
+            int statusCode = response.getStatusCode();
+            extentTestChild.info("Status Code: " + statusCode);
+
+            if (statusCode != 200) {
+                extentTestChild.fail("API returned non-200 response: " + statusCode);
+                Assert.fail("API failed with HTTP code: " + statusCode);
+            }
+
+            // Step 4: Parse and log response
+            String responseBody = response.getBody().prettyPrint();
+            extentTestChild.info("Response body: " + responseBody);
+
+            JsonPath jsonPath = response.jsonPath();
+
+            // Step 5: Extract token
+            if (jsonPath.get("token") != null) {
+                token = jsonPath.getString("token");
+                extentTestChild.pass("Token received: " + token);
+                Reporter.log("Token: " + token, true);
+            } else {
+                extentTestChild.fail("Token not found in response");
+                Assert.fail("Token key not present in response JSON");
+            }
+
+        } catch (Exception e) {
+            extentTestChild.fail("Exception during getToken(): " + e.getMessage());
+            Assert.fail("Error in getToken(): " + e.getMessage());
+        }
+
+        Reporter.log("********************* finish line **************************", true);
+        return token;
+    }
+    
+    
+    
+    public void getTemporaryOrderDetail(String requestUri) {
+
+        extentTestChild = extentTest.createNode("Get Temporary OrderDetail");
+        extentTestChild.info("Get Temporary OrderDetail");
+
+        String token = null;
+
+        try {
+            // Step 1: Prepare request
+            RequestSpecification httpRequest = RestAssured.given();
+
+            // Step 2: Construct JSON body
+            JSONObject requestParams = new JSONObject();
+            requestParams.put("pin", "123456");
+            requestParams.put("verifyByPin", true);
+            requestParams.put("mobileNumber", "8141143966");
+            requestParams.put("deviceId", null);  // Optional
+
+            Reporter.log("Request body: " + requestParams.toJSONString(), true);
+            extentTestChild.info("Request body: " + requestParams.toJSONString());
+
+            httpRequest.header("Content-Type", "application/json");
+            httpRequest.body(requestParams.toJSONString());
+
+            // Step 3: Send POST request
+            Response response = httpRequest.request(Method.POST, requestUri);
+            int statusCode = response.getStatusCode();
+            extentTestChild.info("Status Code: " + statusCode);
+
+            if (statusCode != 200) {
+                extentTestChild.fail("API returned non-200 response: " + statusCode);
+                Assert.fail("API failed with HTTP code: " + statusCode);
+            }
+
+            // Step 4: Parse and log response
+            String responseBody = response.getBody().prettyPrint();
+            extentTestChild.info("Response body: " + responseBody);
+
+            JsonPath jsonPath = response.jsonPath();
+
+            // Step 5: Extract token
+            if (jsonPath.get("token") != null) {
+                token = jsonPath.getString("token");
+                extentTestChild.pass("Token received: " + token);
+                Reporter.log("Token: " + token, true);
+            } else {
+                extentTestChild.fail("Token not found in response");
+                Assert.fail("Token key not present in response JSON");
+            }
+
+        } catch (Exception e) {
+            extentTestChild.fail("Exception during getToken(): " + e.getMessage());
+            Assert.fail("Error in getToken(): " + e.getMessage());
+        }
+
+        Reporter.log("********************* finish line **************************", true);
+        
+    }
+
+	  
+	  @Test
+	  
+	  public void getGoldRates() {
+		    extentTestChild = extentTest.createNode("Get Gold Rate From API");
+		    extentTestChild.info("Get Gold Rate From API");
+		    String requestUri = "https://gold-loan-backend-api.gfau.augmont.com/api/digital-gold/rates";
+		 //  1. https://gold-loan-backend-api.gfau.augmont.com/api/customer/app/validate-pin-biometric/v2   -get token
+		    //after pay now click hit below api
+		  // 2 https://gold-loan-backend-api.gfau.augmont.com/api/customer/app/customer-wallet/pay      take temporderid
+//3        https://gold-loan-backend-api.gfau.augmont.com/api/digital-gold/buy/status?id=18160      //pass token and temporderid
+		 //  click on sucess
+		    //hit 
+		    //https://gold-loan-backend-api.gfau.augmont.com/api/digital-gold/buy/status?id=18160  
+		    
+		    extentTestChild.info("Request URI is:"+requestUri);
+		    RequestSpecification httpRequest = RestAssured.given();
+		    httpRequest.header("Accept", "application/json");
+		    Response response = httpRequest.request(Method.GET, requestUri);
+		    int statusCode = response.getStatusCode();
+
+		    extentTestChild.info("Status Code: " + statusCode);
+		    extentTestChild.info("Response Body:\n" + response.getBody().prettyPrint());
+
+		    Assert.assertEquals(statusCode, 200, "Expected status code 200");
+		    JsonPath jsonPath = response.jsonPath();
+
+		    
+		        Double goldRate = response.jsonPath().getDouble("data[0].rate");
+		        if (goldRate == null) {
+		            extentTestChild.fail("Gold rate not found in the response.");
+		            Assert.fail("Gold rate is null");
+		        } else {
+		            System.out.println("Gold Rate: " + goldRate);
+		            extentTestChild.pass("Gold Rate: " + goldRate);
+		        }
+		
+
+	  if (jsonPath.get("rate.blockId") != null) {
+		    String blockId = jsonPath.getString("rate.blockId");
+		    extentTestChild.pass("Block ID: " + blockId);
+		    Reporter.log("Block ID: " + blockId, true);
+		} else {
+		    extentTestChild.fail("Block ID not found in response");
+		    Assert.fail("Missing 'rate.blockId' in JSON response");
+		}
+
+	  }
+}

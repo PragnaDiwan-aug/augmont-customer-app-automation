@@ -1,0 +1,804 @@
+package com.augmont.objectpages;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
+import com.augmont.base.BaseTest;
+import io.appium.java_client.AppiumBy;
+import io.appium.java_client.android.AndroidDriver;
+
+
+public class PaymentPage extends BaseTest {	
+	
+	
+	String congratulationMsg="Congratulations";
+	String walletFundSucessMsg="Transaction \nsuccessful";
+
+			
+	String BuyGoldmessage="Gold has been successfully bought.";	
+	By clickOnCardOption=AppiumBy.xpath("//android.widget.RadioButton[@resource-id='new-card']");
+	By clickOnCardOptionRazorPayEle=AppiumBy.xpath("//android.widget.RadioButton[normalize-space(@text)='Cards Cards VISA MC RUPAY AMEX']");	
+	By defaultGoBack=AppiumBy.xpath("//android.widget.Button[@text='Go back']");
+	//By defaultGoBack=AppiumBy.xpath("//*[contains(@class, 'font-heading') and contains(@class, 'text-2xl') and contains(@class, 'd:hidden')]");
+	By netBankingOptionEle=AppiumBy.xpath("//android.widget.RadioButton[@resource-id='net-banking']");
+	By cardNumber=AppiumBy.xpath("//android.widget.EditText[@resource-id='cardNumber']");
+	By cardNumberRazorPayEle=AppiumBy.xpath("//input[@name=\"card.number\"]");
+	By cardHolderName=AppiumBy.xpath("//android.widget.EditText[@resource-id='cardHolderName']");
+	By cardHolderNameRazorPay=AppiumBy.xpath("//android.widget.EditText[@hint='Enter name on card']");
+	By emailIDRazorPay=AppiumBy.xpath("//android.widget.EditText[@hint='Enter Email']");
+	By cardMonthEle=AppiumBy.xpath("//android.widget.EditText[@resource-id='selMonth']");
+	By expiryField=AppiumBy.xpath("//input[@name=\"card.expiry\"]");
+	By cardYearEle=AppiumBy.xpath("//android.widget.EditText[@resource-id='selYear']");
+	By cardCVVNumber=AppiumBy.xpath("//android.widget.EditText[@resource-id='cvvNumber']");
+	By cardCVVNumberRazorPay=AppiumBy.xpath("//input[@name=\"card.cvv\"]");
+	By payClick=AppiumBy.xpath("//android.widget.TextView[@text='PAY']");
+	By amanteBtn=By.xpath("//android.widget.ImageView[contains(@content-desc, 'Emandate')]");
+	By bankTextBox=By.xpath("(//android.widget.ImageView[@content-desc='Select Bank'])[1]");
+	By selectBank=By.xpath("//android.view.View[starts-with(@content-desc, 'Andhra Bank')]");
+	By submitBtn=AppiumBy.accessibilityId("Submit");
+	By authenticBtn=By.xpath("//android.widget.Button[@resource-id=\"redesign-v15-cta\"]");
+	By netBankingBtn=By.xpath("//android.view.View[@resource-id=\"emandate-options\"]/android.view.View[2]/android.view.View");
+	By sucessBtn=By.xpath("//android.widget.Button[@text=\"Success\"]");
+	By sucessClickCard=AppiumBy.xpath("//android.widget.RadioButton[@text='Success']");
+	By submitClickCard=AppiumBy.xpath("//android.widget.Button[@text='Submit']");
+	By walletEle=AppiumBy.accessibilityId("WALLET");
+	By PayNowele=AppiumBy.accessibilityId("Pay Now");
+	By jioMoneyEle=AppiumBy.xpath("//android.widget.RadioButton[@text=\"JioMoney JioMoney\"]");
+	By continueBtn=AppiumBy.xpath("//android.widget.Button[@text=\"Continue\"]");
+	By continueBtnRazorPay=AppiumBy.xpath("(//button[@name=\"button\"])[2]");
+	By continueBtnRazorPayAfterEnterOtpEle=AppiumBy.xpath("(//button[@name=\"button\"])[3]");	
+	By mayBeLater=AppiumBy.xpath("//button[@name=\"pay_without_saving_card\"]");
+	By otpFieldRazorPay=AppiumBy.cssSelector("input[name='otp'][placeholder='Auto Detecting OTP']");
+	By continueandPayele=AppiumBy.xpath("//android.widget.Button[@text=\"Continue & Pay\"]");
+	By walletfundSucessMsg=AppiumBy.xpath("//android.view.View[contains(@content-desc, 'Transaction')]");
+	By paymentAmountEle=AppiumBy.xpath("//android.widget.TextView[@text='View Breakup']/preceding-sibling::android.widget.TextView");
+	By upiIDSelecttionEle=AppiumBy.xpath("//android.widget.RadioButton[@resource-id='new-vpa']");
+	By upiTextBox=AppiumBy.xpath("//android.widget.EditText[@resource-id='vpaInput']");
+	By verifyUPIIDele=AppiumBy.xpath("//android.widget.TextView[@text='VERIFY UPI ID']");
+	By verifyUPIIDSuccessEle=AppiumBy.xpath("//android.widget.TextView[@text='Dummy User']");
+	
+	public void clickOnAmanteButton()
+	{
+		wait.until(ExpectedConditions.visibilityOfElementLocated(amanteBtn));
+		driver.findElement(amanteBtn).click();
+	    Reporter.log("Click Perofom On Emandate button SuceessFully",true);
+	    extentTestChild.info("Click Perofom On Emandate button SuceessFully");
+	}
+	
+	public void clickOnCardOption()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);        // Ignore exception
+
+			
+			WebElement element = wait.until(driver ->
+		    driver.findElement(clickOnCardOption)
+		);
+			wait.until(ExpectedConditions.elementToBeClickable(element));
+		element.click();   
+	    Reporter.log("Click Perform On Card Radio button SuceessFully",true);
+	    extentTestChild.info("Click Perform On Card Radio button SuceessFully");
+	}
+	
+	public void waitForDefaultUpiOptionToBeVisible()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(80))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);     // Ignore exception
+			
+			WebElement element = wait.until(driver ->
+		    driver.findElement(defaultGoBack));		
+			element.click();
+			
+			 Reporter.log("Wait for Default UPI Option to be Visible",true);
+			    extentTestChild.info("Wait for Default UPI Option to be Visible");
+		
+			Reporter.log("Back Buttom Click Perform",true);
+			extentTestChild.info("Back Buttom Click Perform");
+			
+
+	}
+	public void clickRazorpayCardOption() {
+	    Wait<AndroidDriver> wait = new FluentWait<>(driver)
+	        .withTimeout(Duration.ofSeconds(60))
+	        .pollingEvery(Duration.ofMillis(500))
+	        .ignoring(NoSuchElementException.class);
+//	    
+//	    WebElement element = driver.findElement(
+//	    	    AppiumBy.androidUIAutomator(
+//	    	        "new UiSelector().className(\"android.widget.RadioButton\").text(\"Cards Cards VISA MC RUPAY AMEX\")"
+//	    	    )
+//	    	);
+	   By clickOnCardOptionRazorPayEle = AppiumBy.xpath("//*[@data-value='card']");	
+	   WebElement element=driver.findElement(clickOnCardOptionRazorPayEle);
+	  wait.until(ExpectedConditions.elementToBeClickable(element));	    
+	    System.out.println("Clicking on: " + element.getText());
+	    element.click();
+
+		
+	    Reporter.log("Click Performed on Card Radio button Successfully", true);
+	    extentTestChild.info("Click Performed on Card Radio button Successfully");
+	}
+
+
+	public void clickContinueToPaymentButton()
+	{
+
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(70))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);    
+		
+		WebElement continueElement=driver.findElement(AppiumBy.xpath("//android.widget.Button[@text='Continue to payment']"));
+		wait.until(ExpectedConditions.elementToBeClickable(continueElement));
+		continueElement.click();   
+		 Reporter.log("Click Perform On Continue to Pay button SuceessFully",true);
+		    extentTestChild.info("Click Perform On Continue to Pay button");		
+	
+	}
+	
+	public void selectBankForNetBankingPartialPayment(String bankName) {
+		
+
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+	    // Wait and select the bank from the list
+	    WebElement bankOption = wait.until(ExpectedConditions.elementToBeClickable(
+	        By.xpath("//android.widget.TextView[@text='" + bankName + "']")));
+	    bankOption.click();
+	    Reporter.log("Selected Bank is:"+bankName,true);
+	    extentTestChild.info("Selected Bank is:"+bankName);
+	}
+public void clickOnNetBankingOption()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);        // Ignore exception			
+			WebElement element = wait.until(driver ->
+		    driver.findElement(netBankingOptionEle)
+		);
+			
+		element.click();   
+	    Reporter.log("Click Perofom On NetBanking Radio button SuceessFully",true);
+	    extentTestChild.info("Click Perofom On NetBanking Radio button SuceessFully");
+	}
+
+
+	public void enterCardNumber() throws IOException
+	{
+
+		 prop = new Properties();
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream(System.getProperty("user.dir")+"//Config//data.properties");
+			prop.load(fis);
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		 
+		String cardnumber = prop.getProperty("card.number");
+		System.out.println("Card Number: " + cardNumber);  
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(cardNumber));
+		driver.findElement(cardNumber).sendKeys(cardnumber);
+		Reporter.log("card number is:"+cardnumber,true);
+		extentTestChild.info("card number is:"+cardnumber);
+
+	}
+	public void enterCardNumberOnRazorpay() throws IOException
+	{
+
+		 prop = new Properties();
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream(System.getProperty("user.dir")+"//Config//data.properties");
+			prop.load(fis);
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		 
+		String cardnumber = prop.getProperty("card.number");
+		System.out.println("Card Number: " + cardNumber);  
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(cardNumberRazorPayEle));
+		driver.findElement(cardNumberRazorPayEle).sendKeys(cardnumber);
+		Reporter.log("card number is:"+cardnumber,true);
+		extentTestChild.info("card number is:"+cardnumber);
+
+	}
+	
+	
+	
+	public void enterCardHolderName(String name)
+	{
+		wait.until(ExpectedConditions.visibilityOfElementLocated(cardHolderName));
+		driver.findElement(cardHolderName).sendKeys("test");
+		Reporter.log("Card Holder Name is:",true);
+		extentTestChild.info("Card Holder Name is:");
+
+	}
+	
+	public void enterCardHolderNameRazorPay(String name)
+	{
+		wait.until(ExpectedConditions.visibilityOfElementLocated(cardHolderNameRazorPay));
+		driver.findElement(cardHolderNameRazorPay).sendKeys(name);
+		Reporter.log("Card Holder Name is:"+name,true);
+		extentTestChild.info("Card Holder Name is:"+name);
+
+	}
+
+	public void enterEmailIDRazorPay(String name)
+	{
+		wait.until(ExpectedConditions.visibilityOfElementLocated(emailIDRazorPay));
+		driver.findElement(emailIDRazorPay).sendKeys(name);
+		Reporter.log("Email ID is:"+name,true);
+		extentTestChild.info("Email ID is:"+name);
+
+	}
+
+
+	
+	public void enterExpiryDateCard() {
+	    LocalDate expiry = LocalDate.now().plusMonths(1).plusYears(1);
+	    String month = expiry.format(DateTimeFormatter.ofPattern("MM"));
+	    String year = expiry.format(DateTimeFormatter.ofPattern("yy"));
+	    driver.findElement(cardMonthEle).sendKeys(month);
+	    driver.findElement(cardYearEle).sendKeys(year);
+	}
+	
+	public void enterExpiryDateCardRazorPay() {
+	    LocalDate expiry = LocalDate.now().plusMonths(1).plusYears(1);
+	    String month = expiry.format(DateTimeFormatter.ofPattern("MM"));
+	    String year = expiry.format(DateTimeFormatter.ofPattern("yy"));
+	    driver.findElement(expiryField).sendKeys(""+month+"/"+year+"");
+	    
+	}
+
+	public void enterCVVNumber() throws IOException
+	{
+		 prop = new Properties();
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream(System.getProperty("user.dir")+"//Config//data.properties");
+			prop.load(fis);
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		 
+		String cvvNumber = prop.getProperty("card.cvv");
+		System.out.println("CVV Number: " + cvvNumber);  
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(cardCVVNumber));
+		driver.findElement(cardCVVNumber).sendKeys(cvvNumber);
+		Reporter.log("CVV number is:"+cvvNumber,true);
+		extentTestChild.info("CVV number is:"+cvvNumber);
+	}
+	public void enterCVVNumberRazorPay() throws IOException
+	{
+		 prop = new Properties();
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream(System.getProperty("user.dir")+"//Config//data.properties");
+			prop.load(fis);
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		 
+		String cvvNumber = prop.getProperty("card.cvv");
+		System.out.println("CVV Number: " + cvvNumber);  
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(cardCVVNumberRazorPay));
+		driver.findElement(cardCVVNumberRazorPay).sendKeys(cvvNumber);
+		Reporter.log("CVV number is:"+cvvNumber,true);
+		extentTestChild.info("CVV number is:"+cvvNumber);
+	}
+
+	public void clickOnPayButton()
+	{
+		
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);        // Ignore exception			
+			WebElement element = wait.until(driver ->
+		    driver.findElement(payClick)
+		);
+			wait.until(ExpectedConditions.elementToBeClickable(payClick));
+			element.click();
+	    Reporter.log("Click Perform On Pay Button",true);
+		extentTestChild.info("Click Perform On Pay Button");
+
+	}
+
+	public void clickOnSucessCardButton()
+	{
+		
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);        // Ignore exception			
+			WebElement element = wait.until(driver ->
+		    driver.findElement(sucessClickCard));
+
+		wait.until(ExpectedConditions.elementToBeClickable(sucessClickCard));
+		element.click();
+
+	    Reporter.log("Click Perform On Sucess Button",true);
+		extentTestChild.info("Click Perform On Sucess Button");
+
+	}
+	
+	public void clickOnSubmitCardButton()
+	{
+		
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);        // Ignore exception			
+			WebElement element = wait.until(driver ->
+		    driver.findElement(submitClickCard)
+		);
+			wait.until(ExpectedConditions.elementToBeClickable(submitClickCard));
+			element.click();
+
+	    Reporter.log("Click Perform On  Submit Button",true);
+		extentTestChild.info("Click Perform On Submit Button");
+
+	}
+
+	
+	public void selectBank()
+	{
+			wait.until(ExpectedConditions.visibilityOfElementLocated(bankTextBox));
+			driver.findElement(bankTextBox).click();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(selectBank));
+			driver.findElement(selectBank).click();
+	       Reporter.log("bank Click Perform",true);
+	}
+
+	public void clickOnSubmitBtn()
+	{
+			wait.until(ExpectedConditions.visibilityOfElementLocated(submitBtn));
+			driver.findElement(submitBtn).click(); 
+	       Reporter.log("Submit button Click Perform",true);
+
+	}
+	public void clicOnAuthenticButton()
+	{
+		try {
+			Thread.sleep(6000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			wait.until(ExpectedConditions.visibilityOfElementLocated(authenticBtn));
+	       driver.findElement(authenticBtn).click();
+	       Reporter.log("click perform on Autheticate Button",true);
+	       extentTestChild.info("click perform on Autheticate Button");
+	}
+	public void clicOnAuthenticButton2()
+	{
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			wait.until(ExpectedConditions.visibilityOfElementLocated(authenticBtn));
+	       driver.findElement(authenticBtn).click();
+	       Reporter.log("click perform on Autheticate Button",true);
+	       extentTestChild.info("click perform on Autheticate Button");
+	}
+	public void clickOnNetBankingBtn()
+	{
+		  wait.until(ExpectedConditions.visibilityOfElementLocated(netBankingBtn));
+	       driver.findElement(netBankingBtn).click();
+	       Reporter.log("click perform on netbanking Button",true);	       
+	       extentTestChild.info("click perform on netbanking Button");
+	}
+	
+	public void clickOnSucessBtn()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(sucessBtn)
+			);	      
+			wait.until(ExpectedConditions.elementToBeClickable(element));
+			element.click();
+	       Reporter.log("click perform on Sucess Button",true);
+	       extentTestChild.info("click perform on Sucess Button");
+
+	}
+	
+	public void getToastMessageoneTimeBuyGold(){
+		
+		
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);        // Ignore exception			
+			WebElement message = wait.until(driver ->
+		    driver.findElement(By.xpath("//*[contains(@content-desc, 'Congratulations')]")));
+			wait.until(ExpectedConditions.visibilityOf(message));
+		Reporter.log("Message is:"+message,true);	
+		
+		By goldMessage = AppiumBy.xpath("//*[contains(@content-desc, 'successfully bought')]");
+		WebElement goldmsg=driver.findElement(goldMessage);
+		String congmsg= message.getAttribute("content-desc");		
+		String buyGoldMsg=goldmsg.getAttribute("content-desc");
+		if(congmsg.equals(congratulationMsg)&&buyGoldMsg.contains(BuyGoldmessage))
+		{
+			Reporter.log("gold Bought Message is:"+buyGoldMsg,true);
+			extentTestChild.pass("gold Bought Message is:"+buyGoldMsg);
+		}
+		else
+		{
+			extentTestChild.fail("gold Bought Message is:"+buyGoldMsg);
+
+		}
+	}
+	
+	public void clickOnWalletBtn()
+	{
+	    wait.until(ExpectedConditions.visibilityOfElementLocated(walletEle));
+	    driver.findElement(walletEle).click();
+	    Reporter.log("Click Perform on Wallet",true);
+	    extentTestChild.info("Click Perform on Wallet");    
+	}	
+
+	public void clickOnPayNowBtn()
+	{
+		
+		
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(PayNowele)
+			);
+			element.click();
+	    Reporter.log("Click Perform on PayNow Button",true);
+	    extentTestChild.info("Click Perform on PayNow Button");    
+	}	
+	
+	public void clickOnJioMoney()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(jioMoneyEle)
+			);
+			element.click();
+	    Reporter.log("Click Perform on JioMoney Payment Options",true);
+	    extentTestChild.info("Click Perform on JioMoney Payment Options");
+	}
+	
+	public void clickOnContinue()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(30))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(continueBtn)
+			);
+			element.click();
+	    Reporter.log("Click Perform on Continue Button",true);
+	    extentTestChild.info("Click Perform on Continue Button");
+	}
+	
+	public void clickOnContinueRazorPay()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(50))
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(NoSuchElementException.class);
+
+        WebElement element;
+        try {
+            element = wait.until(d -> d.findElement(continueBtnRazorPay));
+        } catch (TimeoutException | NoSuchElementException e) {
+            // Fallback locator if primary not found
+            element = new FluentWait<>(driver)
+                    .withTimeout(Duration.ofSeconds(50))
+                    .pollingEvery(Duration.ofMillis(500))
+                    .ignoring(NoSuchElementException.class)
+                    .until(d -> d.findElement(AppiumBy.xpath("(//button[@name='button'])[3]")));
+        }
+
+        element.click();		
+	    Reporter.log("Click Perform on Continue Button",true);
+	    extentTestChild.info("Click Perform on Continue Button");
+	}
+
+
+	public void clickOnContinueRazorPayAfterEnterOTP()
+	{
+
+       
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(30))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(continueBtnRazorPayAfterEnterOtpEle)
+			);
+			element.click();
+
+
+        element.click();		
+	    Reporter.log("Click Perform on Continue Button",true);
+	    extentTestChild.info("Click Perform on Continue Button");
+	}
+
+
+	
+	
+	public void clickOnMaybeLaterButton()
+	{
+		
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(mayBeLater)
+			);
+			wait.until(ExpectedConditions.elementToBeClickable(element));
+		element.click();
+	    Reporter.log("Click Perform on MayBeLater Button",true);
+	    extentTestChild.info("Click Perform on MayBeLater Button");
+	}
+	
+	
+
+
+	public void enterOtpRazorPay(String otp) {
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
+
+	    // Count OTP input fields using XPath
+	    Long inputCount = (Long) js.executeScript(
+	        "return document.evaluate(\"count(//input[@name='otp'])\", document, null, XPathResult.NUMBER_TYPE, null).numberValue;"
+	    );
+
+	    if (inputCount == 1) {
+	        // Single field OTP
+	        js.executeScript(
+	            "var el = document.evaluate(\"//input[@name='otp']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;" +
+	            "el.value='" + otp + "';" +
+	            "el.dispatchEvent(new Event('input', { bubbles: true }));"
+	        );
+	    } else if (inputCount > 1) {
+	        // Multiple boxes OTP
+	        for (int i = 0; i < otp.length() && i < inputCount; i++) {
+	            String script = 
+	                "var el = document.evaluate(\"(//input[@name='otp'])[" + (i+1) + "]\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;" +
+	                "el.value='" + otp.charAt(i) + "';" +
+	                "el.dispatchEvent(new Event('input', { bubbles: true }));";
+	            js.executeScript(script);
+	        }
+	    } else {
+	        throw new RuntimeException("No OTP input fields found using //input[@name='otp']");
+	    }
+	}
+
+	public void verifyPaymentAmountOnPaymentPage(double expectedAmount) {
+	    // Wait with FluentWait to locate the element
+	    Wait<AndroidDriver> wait = new FluentWait<>(driver)
+	        .withTimeout(Duration.ofSeconds(30))
+	        .pollingEvery(Duration.ofMillis(500))
+	        .ignoring(NoSuchElementException.class);
+
+	    WebElement element = wait.until(driver -> driver.findElement(paymentAmountEle));
+
+	    // Fetch and print raw text from UI
+	    String rawAmount = element.getText(); // Use getAttribute("content-desc") if needed
+	    System.out.println("Raw Amount Text: " + rawAmount);
+
+	    // Clean and parse the string
+	    String cleanAmount = rawAmount.replaceAll("[^0-9.]", "");
+	    BigDecimal actualAmount = new BigDecimal(cleanAmount).setScale(2, RoundingMode.DOWN);
+	    BigDecimal expectedAmountBD = BigDecimal.valueOf(expectedAmount).setScale(2, RoundingMode.HALF_UP);
+	    System.out.println("Parsed Actual Amount: ₹" + actualAmount);
+	    System.out.println("Expected Amount: ₹" + expectedAmountBD);
+
+	    // Compare
+	    if (actualAmount.compareTo(expectedAmountBD) == 0) {
+	        Reporter.log("✅ Payment Amount Verified on Payment Page: ₹" + actualAmount, true);
+	        extentTestChild.pass("Payment Amount Verified on Payment Page: ₹" + actualAmount);
+	    } else {
+	        Reporter.log("❌ Payment Amount Mismatch on Payment Page. Expected: ₹" + expectedAmountBD + ", Found: ₹" + actualAmount, true);
+	        extentTestChild.fail("Payment Amount Mismatch on Payment Page. Expected: ₹" + expectedAmountBD + ", Found: ₹" + actualAmount);
+	    }
+	}
+	
+
+	
+	public void clickOnContinueAndPay()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class).ignoring(StaleElementReferenceException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(continueandPayele)
+			);
+			wait.until(ExpectedConditions.elementToBeClickable(continueandPayele)).click();
+	    Reporter.log("Click Perform on Continue and PAY  Button",true);
+	    extentTestChild.info("Click Perform on Continue and PAY  Button");
+	}
+
+	public void addWalletBalanceSucessMessage()
+	{
+		System.out.println("Current context: " + driver.getContext()); 
+
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class).ignoring(StaleElementReferenceException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(walletfundSucessMsg));
+			wait.until(ExpectedConditions.visibilityOf(element));		
+		String congmsg= element.getAttribute("content-desc");	
+		if(congmsg.equals(walletFundSucessMsg))
+		{
+		Reporter.log("Wallet Add Fund Message is varified:"+congmsg,true);
+		extentTestChild.pass("Wallet Add Fund Message is varified:"+congmsg);
+		}
+		else
+		{
+			Reporter.log("Wallet Add Fund Message is not varified:"+congmsg,true);
+			extentTestChild.fail("Wallet Add Fund Message is not varified:"+congmsg);
+			
+		}
+}
+	
+	public void getCardPaymentSucessMessage()
+	{
+				Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(By.xpath("//*[contains(@content-desc, 'Congratulations')]")));			
+			wait.until(ExpectedConditions.visibilityOf(element));			
+		System.out.println(element.getAttribute("content-desc"));
+		if(element.getAttribute("content-desc").equals(congratulationMsg))
+		{
+			extentTestChild.pass("Payment Successful:"+congratulationMsg);
+		}
+		else
+		{
+			extentTestChild.fail("Payment Failed");
+
+		}
+}
+	
+	
+	public void selectUPIRadioButton()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+		
+			WebElement element = wait.until(driver ->
+		    driver.findElement(upiIDSelecttionEle)
+		);
+		if(!element.isSelected())
+		{
+		element.click();   
+	    Reporter.log("Click Perform On UPI Radio button SuceessFully",true);
+	    extentTestChild.info("Click Perform On UPI Radio button SuceessFully");
+		}
+	}
+	public void selectUPI(String upi)
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+		
+			WebElement element = wait.until(driver ->
+		    driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text='"+upi+"']"))
+		);
+		element.click();   
+	    Reporter.log("Click Perform On UPI SuceessFully",true);
+	    extentTestChild.info("Click Perform On UPI SuceessFully");		
+	}
+
+	public void enterUPINumber(String upiID)
+	{
+		wait.until(ExpectedConditions.visibilityOfElementLocated(upiTextBox));
+		driver.findElement(upiTextBox).sendKeys(upiID);
+		Reporter.log("UPI number is:"+upiID,true);
+		extentTestChild.info("UPI number is:"+upiID);
+	}
+
+	public void clickOnVerifyUPIID()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+		
+			WebElement element = wait.until(driver ->
+		    driver.findElement(verifyUPIIDele)
+		);
+		element.click();   
+	    Reporter.log("Click Perform On Verify UPI ID SuceessFully",true);
+	    extentTestChild.info("Click Perform On Verify UPI ID SuceessFully");		
+	}
+	
+
+	public void verifyUPIIDSucessMessage()
+	{
+				Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(verifyUPIIDSuccessEle));			
+			wait.until(ExpectedConditions.visibilityOf(element));			
+		if(element.getText().equals("Dummy User"))
+		{
+			extentTestChild.pass("UPI ID Verified SuccessFully");
+		}
+		else
+		{
+			extentTestChild.fail("UPI ID Not Verified SuccessFully");
+
+		}
+}
+	
+}

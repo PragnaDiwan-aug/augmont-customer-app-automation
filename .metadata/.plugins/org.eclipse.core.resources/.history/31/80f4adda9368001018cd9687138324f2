@@ -1,0 +1,83 @@
+package com.augmont.test.basetestcases;
+
+
+import org.testng.annotations.Test;
+
+import com.augmont.api.GoldPurchaseAPI;
+import com.augmont.base.BaseTest;
+import com.augmont.objectpages.PurchaseSummaryPage;
+import com.augmont.tests.AddWalletBalanceTest;
+import com.augmont.tests.LoginTest;
+import com.augmont.tests.PaymentMethodTest;
+import com.augmont.tests.PurchaseMethodTest;
+import com.augmont.tests.TransactionMethodTest;
+
+
+
+
+
+public class PurchaseGold extends BaseTest{
+	LoginTest loginMethod=new LoginTest();
+	PurchaseMethodTest purchaseMethod=new PurchaseMethodTest();
+	PaymentMethodTest paymentMethod=new PaymentMethodTest();
+	TransactionMethodTest transactionMethod=new TransactionMethodTest();
+	AddWalletBalanceTest addWalletBalanceMethod=new AddWalletBalanceTest();
+	GoldPurchaseAPI goldPurchaseAPI=new com.augmont.api.GoldPurchaseAPI();
+	
+	@Test(enabled = false)
+	public void createGoldSip_TC001()
+	{	
+		extentTest=extentReports.createTest("Purchase gold with Weekly SIP Create, verify successful payment response, and verify order details");
+		extentTest.info("purchaseGoldAndVarifyDetail_TC001");
+		extentTest.assignCategory("Purchase gold and Varify Detail");  
+		loginMethod.login();
+		purchaseMethod.createSipGoldWeekly();
+		purchaseMethod.getSipSummary();
+		paymentMethod.makeNetBankingPayment();
+	}
+	
+	@Test()
+	public void buyGold_TC001()
+	{	
+		extentTest=extentReports.createTest("Add Funds to Wallet,Buy Gold (One-Time), Pay via Wallet, and Validate Order Details");
+		extentTest.info("buyGold_TC001");
+		extentTest.assignCategory("Buy gold and Varify Detail");  
+		loginMethod.login();
+		addWalletBalanceMethod.AddWalletBalanceUsingWallet();
+		transactionMethod.validateWalletAmountFromTransactionLog();
+		purchaseMethod.buyGoldOneTime();
+		purchaseMethod.varifypurchaseSummary();
+		transactionMethod.getTransactionAmountFromHistory(getExcelData.getNumaricDataInt("PurchaseData",2,3));
+	}
+
+	@Test
+	public void buyGold_TC002()
+	{	
+		extentTest=extentReports.createTest("Buy Gold (One-Time) in Grams, Pay Partially Using Wallet and Card, Then Validate Order Details");
+		extentTest.info("buyGold_TC002");
+		extentTest.assignCategory("Buy gold and Verify Detail");  
+	//	goldPurchaseAPI.getGoldRates();
+		loginMethod.login();
+		addWalletBalanceMethod.getWalletBalanceTest();
+		purchaseMethod.buyGoldOneTimeWithGrams();
+		purchaseMethod.varifypurchaseSummaryForGoldGramOption();
+		paymentMethod.paymentMethodUsingCard();
+		transactionMethod.validateWalletAmountForPartialPayment();
+		transactionMethod.getTransactionAmountFromHistory(PurchaseSummaryPage.totalPurAmount);
+	}
+	
+	@Test
+	public void buyGold_TC003()
+	{	
+		extentTest=extentReports.createTest("Buy Gold (One-Time) with Manually Entered Amount Using Partial Payment via Wallet and Net Banking");
+		extentTest.info("buyGold_TC003");
+		extentTest.assignCategory("Buy gold and Verify Detail");  
+		loginMethod.login();
+		purchaseMethod.buyGoldOneTimeWithManuallyEnteredAmount();
+		purchaseMethod.varifypurchaseSummaryForManuallyEnteredAmountOption();
+		paymentMethod.partialPaymentMethodUsingNetBanking();
+		transactionMethod.getTransactionAmountFromHistory(getExcelData.getNumaricDataInt("PurchaseData",3,3));
+
+	}
+
+}

@@ -1,0 +1,63 @@
+package com.augmont.test.baseTestCases;
+
+
+import org.testng.annotations.Test;
+
+import com.augmont.base.BaseTest;
+import com.augmont.test.testPages.AddWalletBalanceMethod;
+import com.augmont.test.testPages.LoginMethod;
+import com.augmont.test.testPages.PaymentMethod;
+import com.augmont.test.testPages.PurchaseMethod;
+import com.augmont.test.testPages.TransactionMethod;
+
+
+
+
+
+public class PurchaseGold extends BaseTest{
+	LoginMethod loginMethod=new LoginMethod();
+	PurchaseMethod purchaseMethod=new PurchaseMethod();
+	PaymentMethod paymentMethod=new PaymentMethod();
+	TransactionMethod transactionMethod=new TransactionMethod();
+	AddWalletBalanceMethod addWalletBalanceMethod=new AddWalletBalanceMethod();
+	
+	@Test(enabled = false)
+	public void createGoldSIP_TC001()
+	{	
+		extentTest=extentReports.createTest("Purchase gold with Weekly SIP Create, verify successful payment response, and verify order details");
+		extentTest.info("purchaseGoldAndVarifyDetail_TC001");
+		extentTest.assignCategory("Purchase gold and Varify Detail");  
+		loginMethod.login();
+		purchaseMethod.SIPGoldWeekly();
+		purchaseMethod.SIPsummary();
+		paymentMethod.paymentMethodNetBanking();
+	}
+	
+	@Test
+	public void buyGoldTC001()
+	{	
+		extentTest=extentReports.createTest("Add Funds to Wallet,Buy Gold (One-Time), Pay via Wallet, and Validate Order Details");
+		extentTest.info("buyGoldTC001");
+		extentTest.assignCategory("Buy gold and Varify Detail");  
+		loginMethod.login();
+		addWalletBalanceMethod.AddWalletBalanceUsingWallet();
+		transactionMethod.validateWalletAmountFromTransactionLog();
+		purchaseMethod.buyGoldOneTime();
+		purchaseMethod.varifypurchaseSummary();
+		transactionMethod.getTransactionAmountFromHistory();
+	}
+
+	@Test
+	public void buyGoldTC002()
+	{	
+		extentTest=extentReports.createTest("Buy Gold (One-Time) in Grams – Pay Partially Using Wallet and Card, Then Validate Order Details");
+		extentTest.info("buyGoldTC002");
+		extentTest.assignCategory("Buy gold and Varify Detail");  
+		loginMethod.login();
+		purchaseMethod.buyGoldOneTimeWithgrams();
+		//purchaseMethod.varifypurchaseSummary();
+		//transactionMethod.getTransactionAmountFromHistory();
+	}
+
+
+}

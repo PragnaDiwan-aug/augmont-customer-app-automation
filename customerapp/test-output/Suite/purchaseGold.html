@@ -1,0 +1,182 @@
+<html>
+<head>
+<title>TestNG:  purchaseGold</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>purchaseGold</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>0/1/0</td>
+</tr><tr>
+<td>Started on:</td><td>Wed Jul 09 19:11:18 IST 2025</td>
+</tr>
+<tr><td>Total time:</td><td>167 seconds (167393 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-failed'>
+<tr><td colspan='4' align='center'><b>FAILED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td><b>Attribute(s)</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='com.augmont.test.baseTestCases.PurchaseGold.buyGoldTC001()'><b>buyGoldTC001</b><br>Test class: com.augmont.test.baseTestCases.PurchaseGold<br/>
+<a href="#Output-1057263702" onClick='toggleBox("Output-1057263702", this, "Show output", "Hide output");'>Show output</a>
+
+<a href="#Output-1057263702" onClick="toggleAllBoxes();">Show all outputs</a>
+<div class='log' id="Output-1057263702">
+Login Method<br/>
+-----------------------------------------------<br/>
+Click Perform on Skip Button<br/>
+Click Perform on sign up Link<br/>
+Click Perform on RegisterorSignin Now Button<br/>
+click Perform On None of The Above Link<br/>
+Inserted Mobile Number is:8141143966<br/>
+Click peform on Generate OTP<br/>
+Enter OTP Sucessfully<br/>
+-----------------------------------------------<br/>
+Buy gold one time with defalut Amount tab<br/>
+-----------------------------------------------<br/>
+Click Perofom On ReInvestAndMore SuceessFully<br/>
+Click Perofom On Gold investment SuceessFully<br/>
+Click Perofom On Start Investing in Gold SuceessFully<br/>
+Click Perofom On One Time Button SuceessFully<br/>
+Click Perofom On Amount button SuceessFully<br/>
+Selected Tab Amount is:500.0<br/>
+Click Perofom On Proceed SuceessFully<br/>
+-----------------------------------------------<br/>
+Varify Purchase Gold One Time Summary<br/>
+-----------------------------------------------<br/>
+Investment Type is:One Time<br/>
+Investment Type is varified:One Time<br/>
+Total Amount is:₹ 500.0<br/>
+Total Amount is varified:500.0<br/>
+Paid Amount is:₹ 500.0<br/>
+Paid Amount is varified:500.0<br/>
+Net Payable Amount is:₹ 0.00<br/>
+NetPayable Amount is varified:0.0<br/>
+Click Perofom On Proceed to pay SuceessFully<br/>
+gold Bought Message is:0.0489 grams of Gold has been successfully bought.
+You can sell your gold/silver after 48 hours.<br/>
+-----------------------------------------------<br/>
+Varify Amount from Transaction History<br/>
+-----------------------------------------------<br/>
+Click Perofom On ReInvestAndMore SuceessFully<br/>
+Click Perofom On Gold investment SuceessFully<br/>
+Click Perofom transaction History Tab SuceessFully<br/>
+</div>
+</td>
+<td><div><pre>org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of element located by By.xpath: //*[contains(@content-desc, &apos;Latest&apos;)]/following-sibling::*[contains(@content-desc, &apos;₹&apos;) and @class=&apos;android.view.View&apos;] (tried for 20 second(s) with 500 milliseconds interval)
+Build info: version: &apos;4.34.0&apos;, revision: &apos;707dcb4246*&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.5&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Capabilities {appium:app: C:\Users\Kamlesh Diwan\appi..., appium:appActivity: com.augmont.augmont_android..., appium:appPackage: com.augmont.augmont_android..., appium:appWaitActivity: *, appium:appWaitDuration: 60000, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Kamlesh Diwan\appi..., appWaitActivity: *, appWaitDuration: 60000, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: android, platformName: ANDROID, resetKeyboard: true, unicodeKeyboard: true}, appium:deviceApiLevel: 36, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone64_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 440, appium:deviceScreenSize: 1080x2220, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:pixelRatio: 2.75, appium:platformVersion: 16, appium:resetKeyboard: true, appium:statBarHeight: 66, appium:takesScreenshot: true, appium:unicodeKeyboard: true, appium:viewportRect: {height: 2154, left: 0, top: 66, width: 1080}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: 4d9bd866-b18f-4f7e-a758-72cfaadac13f
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at com.augmont.objectPages.TransactionPage.getTransactionAmount(TransactionPage.java:29)
+	at com.augmont.test.testPages.TransactionMethod.getTransactionAmountFromHistory(TransactionMethod.java:22)
+	at com.augmont.test.baseTestCases.PurchaseGold.buyGoldTC001(PurchaseGold.java:42)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 27 stack frames</pre></div><a href='#' onClick='toggleBox("stack-trace1057263702", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1057263702'><pre>org.openqa.selenium.TimeoutException: Expected condition failed: waiting for visibility of element located by By.xpath: //*[contains(@content-desc, &apos;Latest&apos;)]/following-sibling::*[contains(@content-desc, &apos;₹&apos;) and @class=&apos;android.view.View&apos;] (tried for 20 second(s) with 500 milliseconds interval)
+Build info: version: &apos;4.34.0&apos;, revision: &apos;707dcb4246*&apos;
+System info: os.name: &apos;Windows 11&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;17.0.5&apos;
+Driver info: io.appium.java_client.android.AndroidDriver
+Capabilities {appium:app: C:\Users\Kamlesh Diwan\appi..., appium:appActivity: com.augmont.augmont_android..., appium:appPackage: com.augmont.augmont_android..., appium:appWaitActivity: *, appium:appWaitDuration: 60000, appium:autoGrantPermissions: true, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {app: C:\Users\Kamlesh Diwan\appi..., appWaitActivity: *, appWaitDuration: 60000, autoGrantPermissions: true, automationName: UiAutomator2, deviceName: android, platformName: ANDROID, resetKeyboard: true, unicodeKeyboard: true}, appium:deviceApiLevel: 36, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone64_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 440, appium:deviceScreenSize: 1080x2220, appium:deviceUDID: emulator-5554, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:networkConnectionEnabled: true, appium:pixelRatio: 2.75, appium:platformVersion: 16, appium:resetKeyboard: true, appium:statBarHeight: 66, appium:takesScreenshot: true, appium:unicodeKeyboard: true, appium:viewportRect: {height: 2154, left: 0, top: 66, width: 1080}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
+Session ID: 4d9bd866-b18f-4f7e-a758-72cfaadac13f
+	at org.openqa.selenium.support.ui.WebDriverWait.timeoutException(WebDriverWait.java:84)
+	at org.openqa.selenium.support.ui.FluentWait.until(FluentWait.java:228)
+	at com.augmont.objectPages.TransactionPage.getTransactionAmount(TransactionPage.java:29)
+	at com.augmont.test.testPages.TransactionMethod.getTransactionAmountFromHistory(TransactionMethod.java:22)
+	at com.augmont.test.baseTestCases.PurchaseGold.buyGoldTC001(PurchaseGold.java:42)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:677)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:221)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:962)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:194)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:806)
+	at org.testng.TestRunner.run(TestRunner.java:601)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:433)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:427)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:387)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:330)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1256)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1176)
+	at org.testng.TestNG.runSuites(TestNG.java:1099)
+	at org.testng.TestNG.run(TestNG.java:1067)
+	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+</pre></div></td>
+<td>107</td>
+<td>com.augmont.test.baseTestCases.PurchaseGold@221a3fa4</td></tr>
+</table><p>
+</body>
+</html>

@@ -1,0 +1,5 @@
+#Global Test property file. 
+
+
+test.report.folder=Reports
+
