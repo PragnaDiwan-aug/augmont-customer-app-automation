@@ -1,13 +1,18 @@
 package com.augmont.objectpages;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -33,21 +38,28 @@ By logOutLink=AppiumBy.xpath("//android.widget.ImageView[@content-desc=\"Logout\
 public void clickOnHomeMenu()
 {
 	Wait<AndroidDriver> wait = new FluentWait<>(driver)
-		    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+		    .withTimeout(Duration.ofSeconds(30))             // Total wait time
 		    .pollingEvery(Duration.ofMillis(500))             // Polling interval
 		    .ignoring(NoSuchElementException.class);        // Ignore exception		
 		WebElement element = wait.until(driver ->
 	    driver.findElement(homeMenuClick)
 	);
+		wait.until(ExpectedConditions.elementToBeClickable(homeMenuClick));
+	element.click();
 		
-	element.click();   
-    Reporter.log("Click Perform on Home Menu",true);
+		Reporter.log("Click Perform on Home Menu",true);
     extentTestChild.info("Click Perform on Home Menu");    
 }
 
 
 public void clickOnSkipLinkMethod()
 {
+	try {
+		Thread.sleep(5000);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	Wait<AndroidDriver> wait = new FluentWait<>(driver)
 		    .withTimeout(Duration.ofSeconds(50))             // Total wait time
 		    .pollingEvery(Duration.ofMillis(500))             // Polling interval
@@ -57,11 +69,55 @@ public void clickOnSkipLinkMethod()
 	);   
 		wait.until(ExpectedConditions.visibilityOf(element));
 		element.click();
+
     Reporter.log("Click Perform on Skip Button",true);
     extentTestChild.info("Click perform on Skip button");    
 }
+
+public void clickOnNext()
+{
+	try {
+		Thread.sleep(5000);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	Wait<AndroidDriver> wait = new FluentWait<>(driver)
+		    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+		    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+		    .ignoring(NoSuchElementException.class);        // Ignore exception		
+		WebElement element = wait.until(driver ->
+	    driver.findElement(AppiumBy.accessibilityId("Next"))
+	);   
+		wait.until(ExpectedConditions.visibilityOf(element));
+		element.click();
+		element.click();
+		element.click();
+		element.click();
+	    Reporter.log("Click Perform on Next Button",true);
+	    extentTestChild.info("Click perform on Next button");		
+		 driver.findElement(AppiumBy.accessibilityId("Get Started")).click();
+		 try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	//	 driver.navigate().back();
+   // Reporter.log("Click Perform on Next Button",true);
+    //extentTestChild.info("Click perform on Next button");    
+}
 public void clickOnSignInSignUpMethod()
 {
+	
+	Wait<AndroidDriver> wait = new FluentWait<>(driver)
+		    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+		    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+		    .ignoring(NoSuchElementException.class);        // Ignore exception		
+		WebElement element = wait.until(driver ->
+	    driver.findElement(clickOnSignInSignUpLink)
+	);   
+		wait.until(ExpectedConditions.visibilityOf(element));
 	  driver.findElement(clickOnSignInSignUpLink).click();
       Reporter.log("Click Perform on sign up Link",true);
       extentTestChild.info("Click Perform on sign up Link"); 
@@ -148,19 +204,30 @@ public void insertOTP(long otp)
 	}
 }
 public void handleSkipButtonIfPresent() {
-    try {
-        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(5));        
-        WebElement skipButton = shortWait.until(ExpectedConditions.presenceOfElementLocated(
-            AppiumBy.xpath("//android.view.View[@content-desc='Skip']")));
-        
-        if (skipButton.isDisplayed()) {
-            skipButton.click();
-            System.out.println("Skip button was present and clicked.");
-        }
-    } catch (TimeoutException e) {
-        System.out.println("Skip button not displayed. Continuing without clicking.");
-    }
-}
+	try {
+	    Wait<AndroidDriver> wait = new FluentWait<>(driver)
+	            .withTimeout(Duration.ofSeconds(50))
+	            .pollingEvery(Duration.ofMillis(500))
+	            .ignoring(NoSuchElementException.class);
+
+	    // Find the skip button element
+	    WebElement skipButton = wait.until(driver ->
+	            driver.findElement(AppiumBy.xpath("//android.view.View[@content-desc='Skip']"))
+	    );
+
+	    	if(skipButton.isDisplayed())
+	    	{
+	    		driver.navigate().back();
+	    		try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+	} catch (TimeoutException e) {
+	    System.out.println("Skip button not displayed. Continuing without clicking.");
+	}}
 public void validateLoginSuccess() {
     try {
         Wait<AndroidDriver> wait = new FluentWait<>(driver)
@@ -194,13 +261,18 @@ public void validateLoginSuccess() {
 
 public void logOut()
 {
+	try {
+		Thread.sleep(500);
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	 driver.findElement(AppiumBy.androidUIAutomator(
 		    "new UiScrollable(new UiSelector().scrollable(true))" +
 		    ".scrollIntoView(new UiSelector().description(\"Logout\"))"	));
 	 
 	 wait.until(ExpectedConditions.elementToBeClickable(logOutLink));	
 	driver.findElement(logOutLink).click();   
-	driver.findElement(AppiumBy.xpath("//android.widget.Button[@content-desc=\"Logout\"]")).click();
     Reporter.log("Logged out of the app",true);
     extentTestChild.info("Logged out of the app");    
 }

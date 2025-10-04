@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -31,32 +32,44 @@ public class PurchaseSummaryPage extends BaseTest {
 	public static double twoDigitTaxAmount=0.0;
 	public static double goldTax=0.0;
 	double perGramPrice=0.0;
+	double perGramSilverPrice=0.0;
 
-	By investPurposeText=AppiumBy.xpath("//android.widget.ScrollView/android.widget.EditText[2]");
+	By sipEmail=AppiumBy.xpath("//android.view.View[@content-desc='Email ID *']/following-sibling::android.widget.EditText[1]");
+	By investPurposeText=AppiumBy.xpath("//android.view.View[@content-desc='Plan Name *']/following-sibling::android.widget.EditText[1]");
 	By calendarOKBtn=AppiumBy.accessibilityId("OK");
 	By proceedToPay=AppiumBy.xpath("//android.widget.ImageView[@content-desc='Proceed to Pay']");
 	By investmentType=AppiumBy.xpath("//android.view.View[@content-desc='One Time']");	
 	By goldGramAmount= AppiumBy.xpath("//android.view.View[@content-desc='Amount']/following-sibling::android.view.View[starts-with(@content-desc, '₹')]");
 	By goldQuantity= AppiumBy.xpath("//android.view.View[@content-desc='Gold Quantity']/following-sibling::android.view.View[starts-with(@content-desc, 'gm')]");
-
-	By totalAmount= AppiumBy.xpath("//android.view.View[@content-desc='Total Amount']/following-sibling::android.view.View[starts-with(@content-desc, '₹')]")
-		;
+	By totalAmount= AppiumBy.xpath("//android.view.View[@content-desc='Total Amount']/following-sibling::android.view.View[starts-with(@content-desc, '₹')]");
+	By purchaseAmountSip= AppiumBy.xpath("//android.view.View[@content-desc='Purchase Amount']/following-sibling::android.view.View[starts-with(@content-desc, '₹')]");
 	By paidAmount=AppiumBy.xpath("//android.view.View[@content-desc='Paid From Wallet']/following-sibling::android.view.View[starts-with(@content-desc, '₹')]");
 	By netPaybleAmount=AppiumBy.xpath("//android.view.View[@content-desc='Net Payable Amount']/following-sibling::android.view.View[starts-with(@content-desc, '₹')]");
 	By taxAmountElement=AppiumBy.xpath("//android.view.View[@content-desc='Tax']/following-sibling::android.view.View[starts-with(@content-desc, '₹')]");
 	By goldPriceLive = AppiumBy.xpath("//android.view.View[@content-desc='Digital Gold Summary']/following-sibling::android.widget.ImageView[starts-with(@content-desc, 'Live Gold Price')]");
+	By silverPriceLive = AppiumBy.xpath("//android.view.View[@content-desc='Digital Silver Summary']/following-sibling::android.widget.ImageView[starts-with(@content-desc, 'Live Silver Price')]");
 
 	
 	
-	public void emailIDSIPForm()
+	public void emailIDSIPForm(String emailid)
 	{
 
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
 
-WebElement emailIdTextBox = driver.findElement(AppiumBy.androidUIAutomator(
-    			    "new UiSelector().className(\"android.widget.EditText\").instance(0)"
-    			));	          
-emailIdTextBox.click(); 
-emailIdTextBox.clear(); 
+			WebElement element = wait.until(driver ->
+			    driver.findElement(sipEmail));			
+			wait.until(ExpectedConditions.elementToBeClickable(element));		
+		element.click(); 
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		element.clear(); 
 
 	     Reporter.log("click Perfotm emailID Textbox",true);
 	     try {
@@ -64,29 +77,27 @@ emailIdTextBox.clear();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();		}
-	     emailIdTextBox.sendKeys("pinklediwan@gmail.com");	     
-	     Reporter.log("Email ID Is:",true);
-	     extentTestChild.info("Email ID Is:");
+	     element.sendKeys(emailid);	     
+	     Reporter.log("Email ID Is:"+emailid,true);
+	     extentTestChild.info("Email ID Is:"+emailid);
 	}
 
 	
-	public void insvestmentPurpose()
+	public void insvestmentPurpose(String planname)
 	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
 
-
-WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
-    			    "new UiSelector().className(\"android.widget.EditText\").instance(1)"
-    			));	          
-	     investpurposetext.click(); 
-	     Reporter.log("click Perfotm",true);
-	     try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();		}
-	     investpurposetext.sendKeys("Gold Loan Purpose");	     
-	     Reporter.log("Purpose of Investment is:",true);
-	     extentTestChild.info("Purpose of Investment is:");
+			WebElement element = wait.until(driver ->
+			    driver.findElement(investPurposeText));			
+			wait.until(ExpectedConditions.elementToBeClickable(element));		
+		element.click(); 
+    Reporter.log("click Perfotm",true);
+	     	     element.sendKeys(planname);	  
+	     Reporter.log("Purpose of Investment is:"+planname,true);
+	     extentTestChild.info("Purpose of Investment is:"+planname);
 	}
 	public void insertSipStartDate()
 	{
@@ -161,8 +172,91 @@ WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
 
 	}
 	
+	
+	public void insertSipStartDateWeekly(long day1,long day2)
+	{
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Define formatter for output format
+	       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	       // Get current date
+	       LocalDate currentDate = LocalDate.now();
+	       // Add 1 day
+	       LocalDate newDate = currentDate.plusDays(day1);
+	       // Format the new date
+	       String formattedDate = newDate.format(formatter);
+	       // Output
+	       System.out.println("New Date After Adding 1 day(Today + 5): " + formattedDate);
+		//////////////////////////////////////////////////////////////////
+	       WebElement dateElement = driver.findElement(By.xpath("//android.view.View[@text='"+formattedDate+"']")); 
+	       dateElement.click();
+	       Reporter.log("Date Calendare click perform",true);
+	       extentTestChild.info("Date Calendare click perform");
+	       ///////////////////////////////////////////////////////////
+	       /////////////////////////////////////////select new date after add 6 day in calendar method
+	       LocalDate selectedDate = LocalDate.parse(formattedDate, formatter);
+	       LocalDate targetDate = selectedDate.plusDays(day2);
+	       
+	       Reporter.log("Targeted Date is:"+targetDate,true);
+	       if (targetDate.getMonthValue() != selectedDate.getMonthValue() || targetDate.getYear() != selectedDate.getYear()) {
+	    	   WebElement button = driver.findElement(AppiumBy.androidUIAutomator(
+	    			    "new UiSelector().className(\"android.widget.Button\").instance(3)"
+	    			));
+	    			button.click();       
+	       
+	       
+	       
+	       ////////////////////////////////////////
+	    // 5. Format final output
+	       String dayOfWeek = targetDate.getDayOfWeek().toString(); 
+	       String formattedDay = dayOfWeek.substring(0, 1) + dayOfWeek.substring(1).toLowerCase(); 
+	       String fullDate = targetDate.format(DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH)); 
+	       String finalFormatted = targetDate.getDayOfMonth() + ", " + formattedDay + ", " + fullDate;
+
+	       // 6. Output
+	       System.out.println("Final Output: " + finalFormatted);
+	       //////////////////////////////////////////////////////////////////////////
+	       //click on final start Date
+	       WebElement finalStartDate = driver.findElement(By.xpath("//android.widget.Button[@content-desc='"+finalFormatted+"']")); 
+	       finalStartDate.click();
+	       Reporter.log("Final Start Date add sucessfully perform",true);
+	       
+	       }
+	       else
+	       {
+	    	// 5. Format final output
+		       String dayOfWeek = targetDate.getDayOfWeek().toString(); 
+		       String formattedDay = dayOfWeek.substring(0, 1) + dayOfWeek.substring(1).toLowerCase(); 
+		       String fullDate = targetDate.format(DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH)); 
+		       String finalFormatted = targetDate.getDayOfMonth() + ", " + formattedDay + ", " + fullDate;
+
+		       // 6. Output
+		       System.out.println("Final Output: " + finalFormatted);
+		       //////////////////////////////////////////////////////////////////////////
+		       //click on final start Date
+		       WebElement finalStartDate = driver.findElement(By.xpath("//android.widget.Button[@content-desc='"+finalFormatted+"']")); 
+		       finalStartDate.click();
+		       Reporter.log("Final Start Date add sucessfully perform",true);
+	       }
+
+
+	}
+
 	public void clickOnCalendarOkButton()
 	{
+		
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(calendarOKBtn));			
+			wait.until(ExpectedConditions.elementToBeClickable(element));
 		 	driver.findElement(calendarOKBtn).click();       
 		 	Reporter.log("Click Perofom On Ok button SuceessFully",true);
 		 	extentTestChild.info("Click Perofom On Ok button SuceessFully");
@@ -172,7 +266,7 @@ WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
 	{
 		
 		Wait<AndroidDriver> wait = new FluentWait<>(driver)
-			    .withTimeout(Duration.ofSeconds(50))             // Total wait time
+			    .withTimeout(Duration.ofSeconds(60))             // Total wait time
 			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
 			    .ignoring(NoSuchElementException.class);          // Ignore exception
 
@@ -184,6 +278,24 @@ WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
 		 	extentTestChild.info("Click Perform On Proceed to pay SuceessFully");
 		 	
 	}
+	
+	public void clikOnProceedtoPaySip()
+	{
+		
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(60))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(AppiumBy.accessibilityId("Proceed To Pay")));			
+			wait.until(ExpectedConditions.elementToBeClickable(element));	
+		 	element.click();       
+		 	Reporter.log("Click Perform On Proceed to pay SuceessFully",true);
+		 	extentTestChild.info("Click Perform On Proceed to pay SuceessFully");
+		 	
+	}
+
 	public double getLivePerGramGoldPrice()
 	{
 	    
@@ -195,6 +307,20 @@ WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
 			Reporter.log("Gold Live Price/gm is:"+amountValue,true);
 			extentTestChild.info("Gold Live Price/gm is:"+amountValue);
 			perGramPrice=amountValue;
+			return perGramPrice;
+	}
+	
+	public double getLivePerGramSilverPrice()
+	{
+	    
+			wait.until(ExpectedConditions.visibilityOfElementLocated(silverPriceLive));
+			WebElement silverPriceLiveEle = driver.findElement(silverPriceLive);
+			String samount = silverPriceLiveEle.getAttribute("content-desc");
+			String amountString = samount.replaceAll("[^0-9.]", "");
+			double amountValue = Double.parseDouble(amountString);
+			Reporter.log("Silver Live Price/gm is:"+amountValue,true);
+			extentTestChild.info("Silver Live Price/gm is:"+amountValue);
+			perGramSilverPrice=amountValue;
 			return perGramPrice;
 	}
 	
@@ -212,6 +338,22 @@ WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
 
 	    extentTestChild.info("Gold Purchase Amount (3 digits): " + purchaseAmountThreeDigit);
 	    extentTestChild.info("Gold Purchase Amount (2 digits): " + purchaseAmountTwoDigit);
+	}
+
+	public void calculateSilverPurchaseAmount(double gramtoBuy) {
+		double total = perGramSilverPrice * gramtoBuy;
+
+	    // Truncate to 3 decimal places (no rounding)
+	    purchaseAmountThreeDigit = perGramSilverPrice * gramtoBuy;
+
+	    // Truncate to 2 decimal places (no rounding)
+	    purchaseAmountTwoDigit = Math.floor(total * 100) / 100.0;
+
+	    Reporter.log("Silver Purchase Amount (3 digits): " + purchaseAmountThreeDigit, true);
+	    Reporter.log("Silver Purchase Amount (2 digits): " + purchaseAmountTwoDigit, true);
+
+	    extentTestChild.info("Silver Purchase Amount (3 digits): " + purchaseAmountThreeDigit);
+	    extentTestChild.info("Silver Purchase Amount (2 digits): " + purchaseAmountTwoDigit);
 	}
 
 	
@@ -328,7 +470,7 @@ WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
 	
 	
 
-	public double verifyGoldAmount(double expectedAmount) {
+	public double verifyGoldAmount(double expectedAmount,String metalName) {
 	    wait.until(ExpectedConditions.visibilityOfElementLocated(goldGramAmount));
 
 	    String stotalamt = driver.findElement(goldGramAmount).getAttribute("content-desc");
@@ -341,36 +483,64 @@ WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
 	    BigDecimal actualAmount = new BigDecimal(amountString).setScale(2, RoundingMode.DOWN);
 	    BigDecimal expected = BigDecimal.valueOf(expectedAmount).setScale(2, RoundingMode.DOWN);
 
-	    System.out.println("Gold Amount (BigDecimal): ₹" + actualAmount);
+	    System.out.println(" "+metalName+" Amount (BigDecimal): ₹" + actualAmount);
 	    System.out.println("Expected Amount (BigDecimal): ₹" + expected);
 
 	    // Compare
 	    if (actualAmount.compareTo(expected) == 0) {
-	        Reporter.log("✅ Gold Amount Verified: Expected ₹" + expected + ", Found ₹" + actualAmount, true);
-	        extentTestChild.pass("Gold Amount Verified: Expected ₹" + expected + ", Found ₹" + actualAmount);
+	        Reporter.log("✅ "+metalName+" Amount Verified: Expected ₹" + expected + ", Found ₹" + actualAmount, true);
+	        extentTestChild.pass(""+metalName+" Amount Verified: Expected ₹" + expected + ", Found ₹" + actualAmount);
 	    } else {
-	        Reporter.log("❌ Gold Amount Mismatch: Expected ₹" + expected + ", Found ₹" + actualAmount, true);
-	        extentTestChild.fail("Gold Amount Mismatch: Expected ₹" + expected + ", Found ₹" + actualAmount);
+	        Reporter.log("❌ "+metalName+" Amount Mismatch: Expected ₹" + expected + ", Found ₹" + actualAmount, true);
+	        extentTestChild.fail(""+metalName+" Amount Mismatch: Expected ₹" + expected + ", Found ₹" + actualAmount);
 	    }
 
 	    purchaseAmount = actualAmount.doubleValue();
 	    return actualAmount.doubleValue();
 	}
 
-	
+	public double verifyGoldPurchaseAmountSip(double expectedAmount,String metalName) {
+	    wait.until(ExpectedConditions.visibilityOfElementLocated(purchaseAmountSip));
 
-	public void calculateGoldTaxAmount(double purchaseAmount, double taxPercentage) {
+	    String stotalamt = driver.findElement(purchaseAmountSip).getAttribute("content-desc");
+	    Reporter.log("Raw Gold Amount from UI: " + stotalamt, true);
+
+	    // Clean and convert string to BigDecimal
+	    String amountString = stotalamt.replaceAll("[^0-9.]", "");
+
+	    // Convert both values with consistent rounding
+	    BigDecimal actualAmount = new BigDecimal(amountString).setScale(2, RoundingMode.DOWN);
+	    BigDecimal expected = BigDecimal.valueOf(expectedAmount).setScale(2, RoundingMode.DOWN);
+
+	    System.out.println(" "+metalName+" Amount (BigDecimal): ₹" + actualAmount);
+	    System.out.println("Expected Amount (BigDecimal): ₹" + expected);
+
+	    // Compare
+	    if (actualAmount.compareTo(expected) == 0) {
+	        Reporter.log("✅ "+metalName+" Amount Verified: Expected ₹" + expected + ", Found ₹" + actualAmount, true);
+	        extentTestChild.pass(""+metalName+" Amount Verified: Expected ₹" + expected + ", Found ₹" + actualAmount);
+	    } else {
+	        Reporter.log("❌ "+metalName+" Amount Mismatch: Expected ₹" + expected + ", Found ₹" + actualAmount, true);
+	        extentTestChild.fail(""+metalName+" Amount Mismatch: Expected ₹" + expected + ", Found ₹" + actualAmount);
+	    }
+
+	    purchaseAmount = actualAmount.doubleValue();
+	    return actualAmount.doubleValue();
+	}
+
+
+	public void calculateGoldTaxAmount(double purchaseAmount, double taxPercentage,String metalname) {
 	    double taxAmount = (purchaseAmount * taxPercentage) / 100.0;
 
 	    // Truncate without rounding
 	     threeDigitTaxAmount =(purchaseAmount * taxPercentage) / 100.0;;
 	     twoDigitTaxAmount = Math.floor(taxAmount * 100) / 100.0;
 
-	    Reporter.log("Calculated Tax on Gold (3 digits): " + threeDigitTaxAmount, true);
-	    Reporter.log("Calculated Tax on Gold (2 digits): " + twoDigitTaxAmount, true);
+	    Reporter.log("Calculated Tax on "+metalname+" (3 digits): " + threeDigitTaxAmount, true);
+	    Reporter.log("Calculated Tax on "+metalname+" (2 digits): " + twoDigitTaxAmount, true);
 
-	    extentTestChild.info("Calculated Tax on Gold (3 digits): " + threeDigitTaxAmount);
-	    extentTestChild.info("Calculated Tax on Gold (2 digits): " + twoDigitTaxAmount);
+	    extentTestChild.info("Calculated Tax on "+metalname+" (3 digits): " + threeDigitTaxAmount);
+	    extentTestChild.info("Calculated Tax on "+metalname+" (2 digits): " + twoDigitTaxAmount);
 
 	}
 
@@ -381,7 +551,7 @@ WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
 	    wait.until(ExpectedConditions.visibilityOfElementLocated(taxAmountElement));
 
 	    String sTaxAmount = driver.findElement(taxAmountElement).getAttribute("content-desc");
-	    Reporter.log("Displayed Gold Tax Amount (raw): " + sTaxAmount, true);
+	    Reporter.log("Displayed  Tax Amount (raw): " + sTaxAmount, true);
 
 	    // Extract numeric value
 	    String amountString = sTaxAmount.replaceAll("[^0-9.]", "");
@@ -391,16 +561,16 @@ WebElement investpurposetext = driver.findElement(AppiumBy.androidUIAutomator(
 	    BigDecimal expectedTax = BigDecimal.valueOf(expectedTaxAmount).setScale(2, RoundingMode.DOWN);
 
 
-	    Reporter.log("Parsed Gold Tax Amount: ₹" + actualTax, true);
-	    System.out.println("Expected Gold Tax Amount: ₹" + expectedTax);
+	    Reporter.log("Parsed  Tax Amount: ₹" + actualTax, true);
+	    System.out.println("Expected  Tax Amount: ₹" + expectedTax);
 
 	    // Compare using BigDecimal
 	    if (actualTax.compareTo(expectedTax) == 0) {
-	        Reporter.log("✅ Gold Tax Amount verified successfully. Expected: ₹" + expectedTax + ", Actual: ₹" + actualTax, true);
-	        extentTestChild.pass("Gold Tax Amount verified: ₹" + actualTax);
+	        Reporter.log("✅  Tax Amount verified successfully. Expected: ₹" + expectedTax + ", Actual: ₹" + actualTax, true);
+	        extentTestChild.pass(" Tax Amount verified: ₹" + actualTax);
 	    } else {
-	        Reporter.log("❌ Gold Tax Amount verification failed. Expected: ₹" + expectedTax + ", Actual: ₹" + actualTax, true);
-	        extentTestChild.fail("Gold Tax Amount mismatch. Expected: ₹" + expectedTax + ", Actual: ₹" + actualTax);
+	        Reporter.log("❌  Tax Amount verification failed. Expected: ₹" + expectedTax + ", Actual: ₹" + actualTax, true);
+	        extentTestChild.fail(" Tax Amount mismatch. Expected: ₹" + expectedTax + ", Actual: ₹" + actualTax);
 	    }
 
 	    goldTax = actualTax.doubleValue();  // assign to global variable if still needed as double

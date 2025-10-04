@@ -3,6 +3,7 @@ package com.augmont.objectpages;
 import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -48,18 +49,32 @@ public class AddWalletBalance extends BaseTest {
 	}	
 	public void clickOnCancelButton()
 	{
-		Wait<AndroidDriver> wait = new FluentWait<>(driver)
-			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
-			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
-			    .ignoring(NoSuchElementException.class);          // Ignore exception
+	    try {
+	        Wait<AndroidDriver> wait = new FluentWait<>(driver)
+	                .withTimeout(Duration.ofSeconds(50))
+	                .pollingEvery(Duration.ofMillis(500))
+	                .ignoring(NoSuchElementException.class);
 
-			WebElement element = wait.until(driver ->
-			    driver.findElement(cancelBtn)
-			);
-	    element.click();
-	    Reporter.log("Click Perform on Cancel Button",true);
-	    extentTestChild.info("Click Perform on Cancel Button");    
-	}	
+	        WebElement element = wait.until(driver ->
+	                driver.findElement(cancelBtn)
+	        );
+
+	        wait.until(ExpectedConditions.elementToBeClickable(cancelBtn));
+	        element.click();
+
+	        Reporter.log("Click performed on Cancel Button", true);
+	        extentTestChild.info("Click performed on Cancel Button");  
+	    }
+	    catch (TimeoutException e) {
+	        Reporter.log("Cancel Button not found or not clickable within timeout", true);
+	        extentTestChild.info("Cancel Button not found or not clickable within timeout");  
+	    }
+	   
+	    catch (Exception e) {
+	        Reporter.log("Unexpected error during Cancel Button click: " + e.getMessage(), true);
+	        extentTestChild.info("Unexpected error during Cancel Button click: " + e.getMessage());  
+	    }
+	}
 
 	public double getWalletBalance()
 	{

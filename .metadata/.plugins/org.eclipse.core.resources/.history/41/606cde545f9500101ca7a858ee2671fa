@@ -1,0 +1,149 @@
+package com.augmont.test.basetestcases;
+
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+import com.augmont.base.BaseTest;
+import com.augmont.objectpages.AddWalletBalance;
+import com.augmont.objectpages.PaymentPage;
+import com.augmont.objectpages.PurchasePage;
+import com.augmont.objectpages.PurchaseSummaryPage;
+import com.augmont.tests.AddWalletBalanceTest;
+import com.augmont.tests.LoginTest;
+import com.augmont.tests.PaymentMethodTest;
+import com.augmont.tests.PurchaseMethodTest;
+import com.augmont.tests.TransactionMethodTest;
+
+public class PurchaseSilver extends BaseTest {
+	
+	LoginTest loginMethod=new LoginTest();
+	PurchaseMethodTest purchaseMethod=new PurchaseMethodTest();
+	PaymentMethodTest paymentMethod=new PaymentMethodTest();
+	TransactionMethodTest transactionMethod=new TransactionMethodTest();
+	AddWalletBalanceTest addWalletBalanceMethod=new AddWalletBalanceTest();
+	PurchaseSummaryPage purchaseSummaryPage=new PurchaseSummaryPage();	
+	
+	
+	@Test()
+	public void buySilver_ValidateOrder_TC001() throws IOException
+	{	
+		extentTest=extentReports.createTest("Buy Silver (One-Time) in Amount with Manually Enter Value, Payment Done using Netbanking, Then Validate Order Details");
+		extentTest.info("buySilver_ValidateOrder_TC001");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+		loginMethod.login();
+		addWalletBalanceMethod.verifyWalletAmountIsZero();
+		purchaseMethod.buySilverOneTimeWithManuallyEnteredAmount();
+		purchaseMethod.varifypurchaseSummaryForManuallyEnteredAmountOption(0.0);
+		paymentMethod.partialPaymentMethodUsingNetBanking(PaymentPage.congratulationMsg,PaymentPage.BuySilvermessage,purchaseSummaryPage.calculateAndPrintNetPayable());
+		transactionMethod.getTransactionAmountFromHistoryForSilver(PurchaseSummaryPage.totalPurAmount);
+	}
+	
+	@Test()
+	public void buySilver_ValidateOrder_TC002()
+	{	
+		extentTest=extentReports.createTest("Buy Silver (One-Time) in Gram with Default Value, Payment Done using Netbanking, Then Validate Order Details");
+		extentTest.info("buySilver_ValidateOrder_TC002");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+		loginMethod.login();
+		addWalletBalanceMethod.verifyWalletAmountIsZero();
+		purchaseMethod.buySilverOneTimeWithGramsDefaultOption("1 Grams");
+		purchaseMethod.varifypurchaseSummaryForSilverGramOption(1,0.0);
+		paymentMethod.partialPaymentMethodUsingNetBanking(PaymentPage.congratulationMsg,PaymentPage.BuySilvermessage,purchaseSummaryPage.calculateAndPrintNetPayableRoundingOff());
+		transactionMethod.getTransactionAmountFromHistoryForSilver(PurchaseSummaryPage.purchaseAmountThreeDigit+PurchaseSummaryPage.threeDigitTaxAmount);
+	}
+	@Test()//pending for razorpay
+	public void buySilver_ValidateOrder_TC003() throws IOException
+	{	
+		extentTest=extentReports.createTest("Buy Silver (One-Time) in Amount with Manually Enter Value, Payment Done using UPI, Then Validate Order Details");
+		extentTest.info("buySilver_ValidateOrder_TC003");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+		loginMethod.login();
+		addWalletBalanceMethod.verifyWalletAmountIsZero();
+		purchaseMethod.buySilverOneTimeWithManuallyEnteredAmount();
+		purchaseMethod.varifypurchaseSummaryForManuallyEnteredAmountOption(0.0);
+		paymentMethod.paymentMethodUsingUPI(purchaseSummaryPage.calculateAndPrintNetPayable());
+		transactionMethod.getTransactionAmountFromHistoryForSilver(PurchaseSummaryPage.totalPurAmount);
+	}
+
+
+	@Test()
+	public void buySilver_ValidateOrder_TC004()
+	{	
+		extentTest=extentReports.createTest("Verify Silver One-Time Default Gram purchase with NetBanking and validate payment failure response" );
+		extentTest.info("buySilver_ValidateOrder_TC004");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+		loginMethod.login();
+		purchaseMethod.buySilverOneTimeWithGramsDefaultOption("1 Grams");
+		purchaseMethod.varifypurchaseSummaryForSilverGramOption(1,0.0);
+		paymentMethod.verifyPaymentUsingNetBankingFailureResponse(purchaseSummaryPage.calculateAndPrintNetPayableRoundingOff());
+	}
+	
+	@Test()
+	public void buySilver_ValidateOrder_TC005()
+	{	
+		extentTest=extentReports.createTest("Add Funds to Wallet,Buy Silver (One-Time), Pay Fully via Wallet, and Validate Order Details");
+		extentTest.info("buySilver_ValidateOrder_TC005");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+		loginMethod.login();
+		try {
+			addWalletBalanceMethod.AddWalletBalanceUsingWallet(getExcelData.getNumaricDataInt("PurchaseData",2,6));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		transactionMethod.validateWalletAmountFromTransactionLog(getExcelData.getNumaricDataInt("PurchaseData",2,6));
+		purchaseMethod.buySilverOneTimeWithDefaultAmountOption();
+		purchaseMethod.verifyPurchaseSummaryForWallet(PaymentPage.congratulationMsg,PaymentPage.BuySilvermessage);
+		transactionMethod.getTransactionAmountFromHistoryForSilver(getExcelData.getNumaricDataInt("PurchaseData",2,3));
+	}
+
+	@Test()
+	public void buySilver_ValidateOrder_TC006() throws IOException
+	{	
+		extentTest=extentReports.createTest("Buy Silver (One-Time) With Manually Enter in Grams, Pay Partially Using Wallet and Card, Then Validate Order Details");
+		extentTest.info("buySilver_ValidateOrder_TC006");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+		loginMethod.login();
+		addWalletBalanceMethod.getWalletBalanceTest();
+		purchaseMethod.buySilverOneTimeWithGramsManuallyEnter(PurchasePage.gramToBuySilver); 
+		purchaseMethod.varifypurchaseSummaryForSilverGramOption(2,AddWalletBalance.intialWalletBal);
+		paymentMethod.paymentMethodUsingCard(PurchaseSummaryPage.netPayAmount);
+		transactionMethod.getTransactionAmountFromHistoryForSilver(PurchaseSummaryPage.purchaseAmountThreeDigit+PurchaseSummaryPage.threeDigitTaxAmount);
+	}
+	
+	@Test
+	public void buySilver_ValidateOrder_TC007() throws IOException 
+	{	
+		extentTest=extentReports.createTest("Buy Silver (One-Time) with Manually Entered Amount Using Partial Payment via Wallet and Net Banking");
+		extentTest.info("buySilver_ValidateOrder_TC007");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+		loginMethod.login();
+		addWalletBalanceMethod.AddWalletBalanceUsingWallet(getExcelData.getNumaricDataInt("PurchaseData",3,6));
+		transactionMethod.validateWalletAmountFromTransactionLog(getExcelData.getNumaricDataInt("PurchaseData",3,6));
+		purchaseMethod.buySilverOneTimeWithManuallyEnteredAmount();
+		purchaseMethod.varifypurchaseSummaryForManuallyEnteredAmountOption(getExcelData.getNumaricDataInt("PurchaseData",3,6));	
+		paymentMethod.partialPaymentMethodUsingNetBanking(PaymentPage.congratulationMsg,PaymentPage.BuySilvermessage,purchaseSummaryPage.calculateAndPrintNetPayable());		
+		transactionMethod.validateWalletAmountForPartialPayment(PurchaseSummaryPage.totalPurAmount-PurchaseSummaryPage.paidAmountFromWallet);
+		transactionMethod.getTransactionAmountFromHistoryForSilver(PurchaseSummaryPage.totalPurAmount);
+
+	}
+
+	@Test
+	public void buySilver_ValidateOrder_TC008() throws IOException
+	{	
+		extentTest=extentReports.createTest("Buy Silver (One-Time) in Grams with Default Option, Pay Partially Using UPI and Wallet, Then Validate Order Details");
+		extentTest.info("buyGold_ValidateOrder_TC008");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+	//	goldPurchaseAPI.getGoldRates();
+		loginMethod.login();
+		addWalletBalanceMethod.AddWalletBalanceUsingWallet(getExcelData.getNumaricDataInt("PurchaseData",3,6));
+		transactionMethod.validateWalletAmountFromTransactionLog(getExcelData.getNumaricDataInt("PurchaseData",3,6));
+		purchaseMethod.buySilverOneTimeWithGramsDefaultOption("5 Grams");
+		purchaseMethod.varifypurchaseSummaryForSilverGramOption(5,getExcelData.getNumaricDataInt("PurchaseData",3,6));
+		paymentMethod.paymentMethodUsingUPI(purchaseSummaryPage.calculateAndPrintNetPayableRoundingOff());
+		transactionMethod.validateWalletAmountForPartialPayment(purchaseSummaryPage.calculateAndPrintNetPayableRoundingOff());
+		transactionMethod.getTransactionAmountFromHistoryForSilver(PurchaseSummaryPage.purchaseAmountThreeDigit+PurchaseSummaryPage.threeDigitTaxAmount);
+	}
+
+}

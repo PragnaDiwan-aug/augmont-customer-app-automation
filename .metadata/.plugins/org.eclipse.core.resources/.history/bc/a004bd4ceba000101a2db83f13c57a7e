@@ -1,0 +1,297 @@
+package com.augmont.tests;
+
+import org.testng.Reporter;
+
+import com.augmont.base.BaseTest;
+import com.augmont.objectpages.AddWalletBalance;
+import com.augmont.objectpages.HomePage;
+import com.augmont.objectpages.PaymentPage;
+import com.augmont.objectpages.PurchasePage;
+import com.augmont.objectpages.PurchaseSummaryPage;
+
+
+public class PurchaseMethodTest extends BaseTest {
+	
+	
+	PurchasePage purchasePage=new PurchasePage();
+	PurchaseSummaryPage purchaseSummaryPage=new PurchaseSummaryPage();
+	PaymentPage paymentPage=new PaymentPage();
+	HomePage homePage=new HomePage();
+	AddWalletBalance addWalletBalance=new AddWalletBalance();
+	public void purchaseSipGold(int amount,String siptype)
+	{
+	extentTestChild=extentTest.createNode("Create SIP OF gold"+siptype);
+	Reporter.log("Create SIP OF gold weekly",true);
+	Reporter.log("-----------------------------------------------",true);
+	purchasePage.clickOnInvestmentAndEarnMore();
+	purchasePage.clickOnGoldInvestment();
+	purchasePage.clickOnStartInvestingGold();
+	purchasePage.clickOnSIPRecommend();
+	purchasePage.clickOnSipInvestment(siptype);
+	purchasePage.enterGoldAmountManually(amount);
+	purchasePage.clickOnProceed();
+	Reporter.log("-----------------------------------------------",true);
+
+	}	
+	public void purchaseSipSilver(int amount,String siptype)
+	{
+	extentTestChild=extentTest.createNode("Create SIP OF Silver"+siptype);
+	Reporter.log("Create SIP OF gold weekly",true);
+	Reporter.log("-----------------------------------------------",true);
+	purchasePage.clickOnInvestmentAndEarnMore();
+	purchasePage.clickOnSilverInvestment();
+	purchasePage.clickOnStartInvestingSilver();
+	purchasePage.clickOnSIPRecommend();
+	purchasePage.clickOnSipInvestment(siptype);
+	purchasePage.enterGoldAmountManually(amount);
+	purchasePage.clickOnProceed();
+	Reporter.log("-----------------------------------------------",true);
+
+	}	
+
+	public void verifySipSummary(double sipAmount,String metaltype,String investmenttype,long day1,long day2)
+	{
+		extentTestChild=extentTest.createNode("Verify Sip Summary");
+		Reporter.log("Verify Sip Summary",true);
+		Reporter.log("-----------------------------------------------",true);
+		purchaseSummaryPage.verifyGoldPurchaseAmountSip(sipAmount,metaltype);
+		purchaseSummaryPage.verifyNetPayableAmount(sipAmount);
+		purchaseSummaryPage.emailIDSIPForm("pragna.diwan@augmont.com");
+		purchaseSummaryPage.insvestmentPurpose(investmenttype);
+		purchaseSummaryPage.insertSipStartDateWeekly(day1,day2);
+		purchaseSummaryPage.clickOnCalendarOkButton();		
+		purchaseSummaryPage.clikOnProceedtoPaySip();
+		Reporter.log("-----------------------------------------------",true);
+
+}
+	
+	public void buyGoldOneTime()
+	{
+		extentTestChild=extentTest.createNode("Buy gold one time with defalut Amount Option");
+		Reporter.log("Buy gold one time with defalut Amount Option",true);
+		Reporter.log("-----------------------------------------------",true);
+		//homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnGoldInvestment();
+		purchasePage.clickOnStartInvestingGold();
+		purchasePage.clickOnOneTimeBtn();
+		purchasePage.clickOnAmountBtn();
+		purchasePage.selectInvAmtFromAmountTab(getExcelData.getNumaricDataInt("PurchaseData",2,2));
+		purchasePage.clickOnProceed();
+		Reporter.log("-----------------------------------------------",true);
+
+	}
+	public void buySilverOneTimeWithDefaultAmountOption()
+	{
+		extentTestChild=extentTest.createNode("Buy Silver one time with defalut Amount Option");
+		Reporter.log("Buy Silver one time with defalut Amount Option",true);
+		Reporter.log("-----------------------------------------------",true);
+		homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnSilverInvestment();
+		purchasePage.clickOnStartInvestingSilver();
+		purchasePage.clickOnOneTimeBtn();
+		purchasePage.clickOnAmountBtn();
+		purchasePage.selectInvAmtFromAmountTab(getExcelData.getNumaricDataInt("PurchaseData",2,2));
+		purchasePage.clickOnProceed();
+		Reporter.log("-----------------------------------------------",true);
+
+	}
+	
+	public void buyGoldOneTimeWithManuallyEnteredAmount()
+	{
+		extentTestChild=extentTest.createNode("Buy Gold (One-Time) with Manually Entered Amount");
+		Reporter.log("Buy Gold (One-Time) with Manually Entered Amount",true);
+		Reporter.log("-----------------------------------------------",true);
+		homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnGoldInvestment();
+		purchasePage.clickOnStartInvestingGold();
+		purchasePage.clickOnOneTimeBtn();
+		purchasePage.clickOnAmountBtn();
+		purchasePage.enterGoldAmountManually(getExcelData.getNumaricDataInt("PurchaseData",3,2));
+		purchasePage.clickOnProceed();
+		Reporter.log("-----------------------------------------------",true);
+
+	}
+	
+	public void buySilverOneTimeWithManuallyEnteredAmount()
+	{
+		extentTestChild=extentTest.createNode("Buy Silver (One-Time) with Manually Entered Amount");
+		Reporter.log("Buy Silver (One-Time) with Manually Entered Amount",true);
+		Reporter.log("-----------------------------------------------",true);
+		homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnSilverInvestment();
+		purchasePage.clickOnStartInvestingSilver();
+		purchasePage.clickOnOneTimeBtn();
+		purchasePage.clickOnAmountBtn();
+		purchasePage.enterGoldAmountManually(getExcelData.getNumaricDataInt("PurchaseData",3,2));
+		purchasePage.clickOnProceed();
+		Reporter.log("-----------------------------------------------",true);
+
+	}
+
+
+	
+	public void buyGoldOneTimeWithGrams()
+	{
+		extentTestChild=extentTest.createNode("Purchase Gold One-Time with Grams Mannually Entered Grams");
+		Reporter.log("Purchase Gold One-Time with Grams Option",true);
+		Reporter.log("-----------------------------------------------",true);
+		homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnGoldInvestment();
+		purchasePage.clickOnStartInvestingGold();
+		purchasePage.clickOnOneTimeBtn();
+		purchasePage.clickOnGramsBtn();
+		purchasePage.enterGramValue(PurchasePage.gramToBuy);
+		purchasePage.clickOnProceed();
+		Reporter.log("-----------------------------------------------",true);
+
+	}
+	
+	public void buySilverOneTimeWithGramsManuallyEnter(double gramtoBuy)
+	{
+		extentTestChild=extentTest.createNode("Purchase Silver One-Time with Grams Mannually Entered Grams");
+		Reporter.log("Purchase Silver One-Time with Grams Option",true);
+		Reporter.log("-----------------------------------------------",true);
+		homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnSilverInvestment();
+		purchasePage.clickOnStartInvestingSilver();
+		purchasePage.clickOnOneTimeBtn();
+		purchasePage.clickOnGramsBtn();
+		purchasePage.enterGramValue(gramtoBuy);
+		purchasePage.clickOnProceed();
+		Reporter.log("-----------------------------------------------",true);
+
+	}
+
+	
+	public void buyGoldOneTimeWithGramsDefaultOption()
+	{
+		extentTestChild=extentTest.createNode("Purchase Gold One-Time with Grams Default Option");
+		Reporter.log("Purchase Gold One-Time with Grams Default Option",true);
+		Reporter.log("-----------------------------------------------",true);
+		homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnGoldInvestment();
+		purchasePage.clickOnStartInvestingGold();
+		purchasePage.clickOnOneTimeBtn();
+		purchasePage.clickOnGramsBtn();
+		purchasePage.selectInvGoldInGramFromGramTab("1 Grams");
+		purchasePage.clickOnProceed();
+		Reporter.log("-----------------------------------------------",true);
+
+	}
+	
+	public void buySilverOneTimeWithGramsDefaultOption(String contentdesc)
+	{
+		extentTestChild=extentTest.createNode("Purchase Silver One-Time with Grams Default Option");
+		Reporter.log("Purchase Silver One-Time with Grams Default Option",true);
+		Reporter.log("-----------------------------------------------",true);
+		homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnSilverInvestment();
+		purchasePage.clickOnStartInvestingSilver();
+		purchasePage.clickOnOneTimeBtn();
+		purchasePage.clickOnGramsBtn();
+		purchasePage.selectInvGoldInGramFromGramTab(contentdesc);
+		purchasePage.clickOnProceed();
+		Reporter.log("-----------------------------------------------",true);
+
+	}
+
+	
+	public void verifyPurchaseSummaryForWallet(String msg1,String msg2)
+	{
+		extentTestChild=extentTest.createNode("Varify Purchase Metal One Time Detail and Validate Success Message");
+		Reporter.log("Varify Purchase Metal One Time Summary",true);
+		Reporter.log("-----------------------------------------------",true);
+		purchaseSummaryPage.varifyInvestmentType(getExcelData.getData("PurchaseData",2,1));
+		purchaseSummaryPage.verifyTotalAmount(getExcelData.getNumaricDataInt("PurchaseData",2,2));
+		purchaseSummaryPage.verifyPaidAmountFromWallet(getExcelData.getNumaricDataInt("PurchaseData",2,2));
+		purchaseSummaryPage.verifyNetPayableAmount(getExcelData.getNumaricDataInt("PurchaseData",2,5));
+		purchaseSummaryPage.clikOnProceedtoPay();
+		paymentPage.getToastMessageoneTimeBuyMetal(msg1,msg2);
+		Reporter.log("-----------------------------------------------",true);
+	
+	}
+	
+	public void varifypurchaseSummaryForGoldGramOption(double gramtobuy,double walletBal)
+	{
+		extentTestChild=extentTest.createNode("Verify Gold(Buy one Time) Gram Purchase Details");
+		Reporter.log("Verify Gold(Buy one Time) Gram Purchase Details",true);
+		Reporter.log("-----------------------------------------------",true);
+		purchaseSummaryPage.varifyInvestmentType(getExcelData.getData("PurchaseData",2,1));
+		purchaseSummaryPage.getLivePerGramGoldPrice();
+		purchaseSummaryPage.calculateGoldPurchaseAmount(gramtobuy);
+		purchaseSummaryPage.verifyGoldAmount(PurchaseSummaryPage.purchaseAmountTwoDigit,"Gold");
+		purchaseSummaryPage.calculateGoldTaxAmount(PurchaseSummaryPage.purchaseAmountThreeDigit,3,"Gold");
+		purchaseSummaryPage.verifyGoldTaxAmount(PurchaseSummaryPage.threeDigitTaxAmount);
+		purchaseSummaryPage.verifyAmountUsingBigDecimal(PurchaseSummaryPage.purchaseAmountThreeDigit+PurchaseSummaryPage.threeDigitTaxAmount);
+		purchaseSummaryPage.verifyPaidAmountFromWallet(walletBal);
+		purchaseSummaryPage.calculateAndPrintNetPayable();
+		purchaseSummaryPage.calculateAndPrintNetPayableRoundingOff();
+		purchaseSummaryPage.verifyNetPayableAmount(purchaseSummaryPage.calculateAndPrintNetPayable());
+		purchaseSummaryPage.clikOnProceedtoPay();
+
+		Reporter.log("-----------------------------------------------",true);
+	
+	}
+	
+	public void varifypurchaseSummaryForSilverGramOption(double gramtobuy,double walletBal)
+	{
+		extentTestChild=extentTest.createNode("Verify Silver(Buy one Time) Gram Purchase Details");
+		Reporter.log("Verify Silver(Buy one Time) Gram Purchase Details",true);
+		Reporter.log("-----------------------------------------------",true);
+		purchaseSummaryPage.varifyInvestmentType(getExcelData.getData("PurchaseData",2,1));
+		purchaseSummaryPage.getLivePerGramSilverPrice();
+		purchaseSummaryPage.calculateSilverPurchaseAmount(gramtobuy);
+		purchaseSummaryPage.verifyGoldAmount(PurchaseSummaryPage.purchaseAmountTwoDigit,"Silver");
+		purchaseSummaryPage.calculateGoldTaxAmount(PurchaseSummaryPage.purchaseAmountThreeDigit,3,"Silver");
+		purchaseSummaryPage.verifyGoldTaxAmount(PurchaseSummaryPage.threeDigitTaxAmount);
+		purchaseSummaryPage.verifyAmountUsingBigDecimal(PurchaseSummaryPage.purchaseAmountThreeDigit+PurchaseSummaryPage.threeDigitTaxAmount);
+		purchaseSummaryPage.verifyPaidAmountFromWallet(walletBal);
+		purchaseSummaryPage.calculateAndPrintNetPayable();
+		purchaseSummaryPage.calculateAndPrintNetPayableRoundingOff();
+		purchaseSummaryPage.verifyNetPayableAmount(purchaseSummaryPage.calculateAndPrintNetPayableRoundingOff());
+		purchaseSummaryPage.clikOnProceedtoPay();
+
+		Reporter.log("-----------------------------------------------",true);
+	
+	}
+	
+	public void varifypurchaseSummaryForManuallyEnteredAmountOption(double walletamt)
+	{
+		extentTestChild=extentTest.createNode("Verify Gold (Buy One-Time) – Manually Entered Amount, Purchase Details, and Validate Success Confirmation");
+		Reporter.log("Verify Gold (Buy One-Time) – Manually Entered Amount, Purchase Details, and Validate Success Confirmation",true);
+		Reporter.log("-----------------------------------------------",true);
+		purchaseSummaryPage.varifyInvestmentType(getExcelData.getData("PurchaseData",3,1));
+		purchaseSummaryPage.verifyTotalAmount(getExcelData.getNumaricDataInt("PurchaseData",3,2));
+		purchaseSummaryPage.verifyPaidAmountFromWallet(walletamt);
+		purchaseSummaryPage.verifyNetPayableAmount(purchaseSummaryPage.calculateAndPrintNetPayable());
+		purchaseSummaryPage.clikOnProceedtoPay();		
+		Reporter.log("-----------------------------------------------",true);
+	
+	}
+	
+	
+
+	public void verifyPurchaseSummaryForCard()
+	{
+		extentTestChild=extentTest.createNode("Verify Purchase Gold One Time Summary");
+		Reporter.log("Verify Purchase Gold One Time Summary",true);
+		Reporter.log("-----------------------------------------------",true);
+		purchaseSummaryPage.varifyInvestmentType(getExcelData.getData("PurchaseData",2,1));
+		purchaseSummaryPage.verifyTotalAmount(getExcelData.getNumaricDataInt("PurchaseData",2,2));
+		purchaseSummaryPage.verifyPaidAmountFromWallet(AddWalletBalance.intialWalletBal);
+		purchaseSummaryPage.verifyNetPayableAmount(PurchaseSummaryPage.totalPurAmount-AddWalletBalance.intialWalletBal);
+		purchaseSummaryPage.clikOnProceedtoPay();
+		Reporter.log("-----------------------------------------------",true);
+	
+	}
+
+
+}

@@ -1,0 +1,13 @@
+1756712137465	Move source folder
+1756728326006	Rename method 'getSipSummary'
+1756799169073	Rename method 'makePaymentViaNetBanking'
+1756817123307	Rename method 'clickOnWeeklyInvestment'
+1756817141671	Rename method 'clickOnSipnvestment'
+1756817686167	Rename method 'createSipGoldWeekly'
+1756883829577	Delete elements
+1756883846582	Delete element
+1756883928103	Delete element
+1756893970122	Rename resource 'Dockerfile'
+1756965856664	Rename resource 'PaymentGateway.xml'
+1756967384616	Rename resource 'cust_uat1408.apk'
+1757076374018	Rename resource 'purchaseGoldSip.xml'

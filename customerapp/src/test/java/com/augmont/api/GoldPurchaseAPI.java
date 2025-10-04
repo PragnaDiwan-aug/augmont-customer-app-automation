@@ -1,11 +1,17 @@
 package com.augmont.api;
 
+import java.util.List;
+import java.util.Map;
+
 import org.json.simple.JSONObject;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import com.augmont.base.BaseTest;
+import com.augmont.objectpages.PaymentPage;
+import com.augmont.utility.TokenReader;
+
 import io.restassured.RestAssured;
 import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
@@ -17,7 +23,8 @@ public class GoldPurchaseAPI extends BaseTest {
 	
 	public static String goldBlockID;
 	public static String TempOrderId;
-	
+	public static String Token;
+
     public void Base_URI() {
         RestAssured.baseURI = BaseURI;
         Reporter.log("Base URI is : "+BaseURI,true);
@@ -160,5 +167,122 @@ public class GoldPurchaseAPI extends BaseTest {
 		    extentTestChild.fail("Block ID not found in response");
 		    Assert.fail("Missing 'rate.blockId' in JSON response");
 		}
+	 }
+
+
+	  @Test
+	  
+	  public void getToken() {
+		    extentTestChild = extentTest.createNode("Get Token From API");
+		    extentTestChild.info("Get Token From API");
+		    String requestUri = "https://gold-loan-backend-api.gfau.augmont.com/api/customer/app/validate-pin-biometric/v2";
+		    // Step 1: Prepare request
+		    RequestSpecification httpRequest = RestAssured.given();
+
+		    // Step 2: Construct JSON body
+		    JSONObject requestParams = new JSONObject();
+		    requestParams.put("pin", "123456");
+		    requestParams.put("verifyByPin", true);
+		    requestParams.put("mobileNumber", "8141143966");
+		    requestParams.put("deviceId", null);
+
+		    Reporter.log("Request body: " + requestParams.toJSONString(), true);
+		    extentTestChild.info("Request body: " + requestParams.toJSONString());
+
+		    // Step 3: Set headers
+		    httpRequest.header("Content-Type", "application/json");
+		    httpRequest.body(requestParams.toJSONString());
+
+		    // Step 4: Send POST request
+		    Response response = httpRequest.request(Method.POST, requestUri);
+		    int statusCode = response.getStatusCode();
+		    extentTestChild.info("Status Code: " + statusCode);
+
+		    if (statusCode != 200) {
+		        extentTestChild.fail("API returned non-200 response: " + statusCode);
+		        Assert.fail("Token API failed with HTTP code: " + statusCode);
+		    }
+
+		    // Step 5: Log response
+		    String responseBody = response.getBody().prettyPrint();
+		    extentTestChild.info("Response body: " + responseBody);
+		    Reporter.log("Response body: " + responseBody, true);
+
+		    // Step 6: Extract token
+		    JsonPath jsonPath = response.jsonPath();
+		    String token = jsonPath.getString("token");  // assuming the JSON key is "token"
+		    Token=token;
+		    extentTestChild.pass("Auth Token: " + token);
+		    Reporter.log("Auth Token: " + token, true);
+
+		    
+	  
 	  }
+	  
+	  @Test
+	  
+	  public void getSipDetails(double sipamount) {
+		    extentTestChild = extentTest.createNode("Get Sip Detail");
+		    extentTestChild.info("Get Sip Detail");
+
+		    String requestUri = "https://gold-loan-backend-api.gfau.augmont.com/api/sip/sip-data/all-sip?from=1&to=25&customerId=9458";
+		    extentTestChild.info("Request URI is: " + requestUri);
+
+		    // Example token and signature values
+		    String authToken = Token;      // Replace with actual token
+		    String signature = TokenReader.Signature;      // Replace with actual signature
+
+		    RequestSpecification httpRequest = RestAssured.given();
+		    httpRequest.header("Accept", "application/json");
+		    httpRequest.header("Authorization", "Bearer " + authToken);  // Common way to send token
+		    httpRequest.header("signature", signature);
+
+		    Response response = httpRequest.request(Method.GET, requestUri);
+
+		    int statusCode = response.getStatusCode();
+		    extentTestChild.info("Status Code: " + statusCode);
+		    extentTestChild.info("Response Body:\n" + response.getBody().prettyPrint());
+
+		    JsonPath jsonPath = response.jsonPath();
+		    List<Map<String, Object>> sipList = jsonPath.getList("data");
+		    for (Map<String, Object> sip : sipList) {
+		        String sipApplicationUniqueId = (String) sip.get("sipApplicationUniqueId");
+		        
+	        if (sipApplicationUniqueId.equals(PaymentPage.SipUniqueID)) {
+	            extentTestChild.pass("Sip Created Successfully: " + sipApplicationUniqueId);
+	            Reporter.log("Sip Created Successfully: " + sip.toString(), true);
+	        
+	       
+	            Object investmentAmountObj = sip.get("investmentAmount");
+	            String investmentAmount = String.valueOf(investmentAmountObj);
+	            
+	            double investamount=Double.parseDouble(investmentAmount);
+	            
+	            if(investamount==sipamount)
+	            {
+		            extentTestChild.pass("Sip Amount varified Successfully: " + sipamount);
+		            Reporter.log("Sip Amount varified Successfully:"  + sipamount, true);
+
+	            }
+	            else
+	            {
+	            	extentTestChild.fail("Sip Amount not varified Successfully: " + sipamount);
+		            Reporter.log("Sip Amount not varified Successfully:"  + sipamount, true);
+
+	            	
+	            }
+	            
+	            break;
+	  }
+	        else
+	        {
+	            extentTestChild.fail("Sip not Created Successfully: " + sipApplicationUniqueId);
+	            Reporter.log("Sip not Created Successfully: " + sip.toString(), true);
+	
+	        }
+		    }
+		    
+		    
+	  }
+	  
 }

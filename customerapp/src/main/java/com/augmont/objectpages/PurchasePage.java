@@ -29,9 +29,13 @@ public class PurchasePage extends BaseTest {
 	
 
 	public static double gramToBuy=0.5;
+	public static double gramToBuySilver=2;
+
 	By reivestmentAndMore=By.xpath("//android.widget.ImageView[@content-desc=\"Reinvest & Earn More\"]");
 	By goldInvesment=AppiumBy.accessibilityId("Gold Investments");
+	By silverInvesment=AppiumBy.accessibilityId("Silver Investments");
 	By startInvestingGold=AppiumBy.accessibilityId("Start Investing in Gold");
+	By startInvestingSilver=AppiumBy.accessibilityId("Start Investing in Silver");
 	By onetimeBtn=AppiumBy.accessibilityId("One Time");
 	By investmentPatternAmount=AppiumBy.accessibilityId("Amount");
 	By investmentPatternGrams=AppiumBy.accessibilityId("Grams");
@@ -66,7 +70,14 @@ public class PurchasePage extends BaseTest {
 	     Reporter.log("Click Perform On Gold investment SuceessFully",true);
 		 extentTestChild.info("Click Perform On Gold investment SuceessFully");
 	}
-	
+	public void clickOnSilverInvestment()
+	{
+		wait.until(ExpectedConditions.visibilityOfElementLocated(silverInvesment));
+		 driver.findElement(silverInvesment).click();
+	     Reporter.log("Click Perform On Silver investment SuceessFully",true);
+		 extentTestChild.info("Click Perform On Silver investment SuceessFully");
+	}
+
 	public void clickOnStartInvestingGold()
 	{
 		try {
@@ -87,6 +98,28 @@ public class PurchasePage extends BaseTest {
 		Reporter.log("Click Perform On Start Investing in Gold SuceessFully",true);
 		extentTestChild.info("Click Perform On Start Investing in Gold SuceessFully");
 	}
+	
+	public void clickOnStartInvestingSilver()
+	{
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		wait.until(ExpectedConditions.visibilityOfElementLocated(startInvestingSilver));
+		Actions action=new Actions(driver);
+		action.moveToElement(driver.findElement(startInvestingSilver)).click().build().perform();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Reporter.log("Click Perform On Start Investing in Silver SuceessFully",true);
+		extentTestChild.info("Click Perform On Start Investing in Silver SuceessFully");
+	}
+
 	public void clickOnOneTimeBtn()
 	{
 		wait.until(ExpectedConditions.visibilityOfElementLocated(onetimeBtn));
@@ -117,52 +150,42 @@ public class PurchasePage extends BaseTest {
         Reporter.log("Click Perform On Sip Recommend SuceessFully",true);   
 		extentTestChild.info("Click Perform On Sip Recommend SuceessFully");
 	}
-	public void clickOnWeeklyInvestment()
+	public void clickOnSipInvestment(String id)
 	{
+		By weeklyInvestment=AppiumBy.accessibilityId(id);
+
 		wait.until(ExpectedConditions.visibilityOfElementLocated(weeklyInvestment));
 		driver.findElement(weeklyInvestment).click();
-	    Reporter.log("Click Perform On Weekely SuceessFully",true);
-		extentTestChild.info("Click Perform On Weekely SuceessFully");
+	    Reporter.log("Click Perform On "+id+" SuceessFully",true);
+		extentTestChild.info("Click Perform On "+id+" SuceessFully");
 	      
-	}
-	public void insertInvestmentAmount()
-	{
-		 int amt = 82000;
-	      WebElement goldamt = driver.findElement(goldInvestAmt);
-	        goldamt.click();
-	        // Wait briefly to ensure focus
-	        try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();		}
-	        // Move cursor to the end (optional but helps)
-	        driver.pressKey(new KeyEvent(AndroidKey.MOVE_END));
-	        // Send backspaces to clear (e.g., 10 characters max)
-	        for (int i = 0; i < 10; i++) {
-	            driver.pressKey(new KeyEvent(AndroidKey.DEL));
-	            try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} // small delay to ensure each delete is processed
-	        }
-
-	        // Enter new amount
-	        goldamt.sendKeys(String.valueOf(amt));
-
-	        // Confirm input (log or assert)
-	        Reporter.log("Gold Amount is: " + amt, true);
-	        extentTestChild.info("invested Gold Amount is:"+amt);
 	}
 	
 	public void selectInvAmtFromAmountTab(double amount1)
 	{
+		
+		
+		final String SCROLLABLE_CLASS = "android.widget.ScrollView";
+		String contentDesc="₹ 500";
+		 String uiAutomatorString =
+			        "new UiScrollable(new UiSelector().className(\"" + SCROLLABLE_CLASS + "\"))" +
+			        ".scrollIntoView(new UiSelector().description(\"" + contentDesc + "\"))";
+			    
+			    WebElement element = driver.findElement(AppiumBy.androidUIAutomator(uiAutomatorString));
+			    element.click();
+	   
 		String amount = String.valueOf(amount1); // or get from Excel/DataProvider
-		String xpath = String.format("//android.view.View[@content-desc='₹ %s']", amount);
-		WebElement amountElement = driver.findElement(By.xpath(xpath));
-		amountElement.click();
+//		String xpath = String.format("//android.view.View[@content-desc='₹ %s']", amount);
+//		WebElement amountElement = driver.findElement(By.xpath(xpath));
+//		
+//		 Wait<AndroidDriver> wait = new FluentWait<>(driver)
+//			        .withTimeout(Duration.ofSeconds(30))
+//			        .pollingEvery(Duration.ofMillis(500))
+//			        .ignoring(NoSuchElementException.class);
+//			    
+//			    WebElement gramInputField = wait.until(driver -> driver.findElement(By.xpath(xpath)));
+//
+//		amountElement.click();
 		Reporter.log("Selected Tab Amount is:"+amount,true);
 		extentTestChild.info("Selected Tab Amount is:"+amount);
 	}
@@ -182,7 +205,15 @@ public class PurchasePage extends BaseTest {
 	}
 	
 	
-	public void enterGramValue() {
+	public void enterGramValue(double gramtobuy) {
+		final String SCROLLABLE_CLASS = "android.widget.ScrollView";
+		String contentDesc="5 Grams";
+		 String uiAutomatorString =
+			        "new UiScrollable(new UiSelector().className(\"" + SCROLLABLE_CLASS + "\"))" +
+			        ".scrollIntoView(new UiSelector().description(\"" + contentDesc + "\"))";
+			    
+			    WebElement element = driver.findElement(AppiumBy.androidUIAutomator(uiAutomatorString));
+
 	    Wait<AndroidDriver> wait = new FluentWait<>(driver)
 	        .withTimeout(Duration.ofSeconds(30))
 	        .pollingEvery(Duration.ofSeconds(2))
@@ -191,18 +222,27 @@ public class PurchasePage extends BaseTest {
 	    WebElement gramInputField = wait.until(driver -> driver.findElement(gramsValueEle));
 	    gramInputField.click();
 	    gramInputField.clear();
-	    gramInputField.sendKeys(String.valueOf(gramToBuy));
+	    gramInputField.sendKeys(String.valueOf(gramtobuy));
 
-	    Reporter.log("Entered Gram Value: " + gramToBuy, true);
-	    extentTestChild.info("Entered Gram Value: " + gramToBuy);
+	    Reporter.log("Entered Gram Value: " + gramtobuy, true);
+	    extentTestChild.info("Entered Gram Value: " + gramtobuy);
 	}
 	
 	public void enterGoldAmountManually(int amount) {
+		
+		final String SCROLLABLE_CLASS = "android.widget.ScrollView";
+		String contentDesc="₹ 500";
+		 String uiAutomatorString =
+			        "new UiScrollable(new UiSelector().className(\"" + SCROLLABLE_CLASS + "\"))" +
+			        ".scrollIntoView(new UiSelector().description(\"" + contentDesc + "\"))";
+			    
+			    WebElement element = driver.findElement(AppiumBy.androidUIAutomator(uiAutomatorString));
+
 	    Wait<AndroidDriver> wait = new FluentWait<>(driver)
 	        .withTimeout(Duration.ofSeconds(30))
 	        .pollingEvery(Duration.ofMillis(500))
 	        .ignoring(NoSuchElementException.class);
-
+	    
 	    WebElement gramInputField = wait.until(driver -> driver.findElement(manuallyEnteredAmountEle));
 	    gramInputField.click();
 	    gramInputField.clear();
@@ -214,15 +254,24 @@ public class PurchasePage extends BaseTest {
 		}
 	    gramInputField.sendKeys(String.valueOf(amount));
 
-	    Reporter.log("Entered Gold Value: " + amount, true);
-	    extentTestChild.info("Entered Gold Value: " + amount);
+	    Reporter.log("Entered  Value: " + amount, true);
+	    extentTestChild.info("Entered  Value: " + amount);
 	}
 
 
 	
 	public void clickOnProceed()
 	{
-		  driver.findElement(proceedClick).click();       
+		
+		
+		 Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			        .withTimeout(Duration.ofSeconds(30))
+			        .pollingEvery(Duration.ofMillis(500))
+			        .ignoring(NoSuchElementException.class);
+			    
+			    WebElement proceedbtn = wait.until(driver -> driver.findElement(proceedClick));
+			    proceedbtn.click();
+	//	  driver.findElement(proceedClick).click();       
 	      Reporter.log("Click Perform On Proceed SuceessFully",true);
 	      extentTestChild.info("Click perform On Proceed SuceessFully");
 	      

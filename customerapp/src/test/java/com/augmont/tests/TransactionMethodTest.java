@@ -30,9 +30,28 @@ public class TransactionMethodTest extends BaseTest {
 		commonMethod.backButton();
 		commonMethod.backButton();
 		addWallletBalance.clickOnMoreMenu();
+		addWallletBalance.clickOnCancelButton();
 		homePage.logOut();
 		extentTestChild.info("-----------------------------------------------");
 }
+		
+		public void getTransactionAmountFromHistoryForSilver(double amount)
+		{
+		extentTestChild=extentTest.createNode("Verify Silver Paid Amount From Transaction History");
+		Reporter.log("Verify Silver Paid Amount From Transaction History",true);
+		Reporter.log("-----------------------------------------------",true);
+		homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnSilverInvestment();
+		transactionPage.clikOnTransactionHistoryTab();
+		transactionPage.getTransactionAmountForSilver(amount);
+		commonMethod.backButton();
+		commonMethod.backButton();
+		addWallletBalance.clickOnMoreMenu();
+		homePage.logOut();
+		extentTestChild.info("-----------------------------------------------");
+}
+
 		
 		public void validateWalletAmountFromTransactionLog(double walletAmt)
 		{
@@ -46,7 +65,7 @@ public class TransactionMethodTest extends BaseTest {
 			
 		}
 		
-		public void validateWalletAmountForPartialPayment()
+		public void validateWalletAmountForPartialPayment(double tranamt)
 		{
 			extentTestChild=extentTest.createNode("Varify Wallet Transaction Amount from Transaction History For Partially Payment");
 			Reporter.log("Varify Wallet Transaction Amount from Transaction History For Partially Payment",true);
@@ -54,9 +73,22 @@ public class TransactionMethodTest extends BaseTest {
 			homePage.clickOnHomeMenu();
 			addWallletBalance.clickOnMoreMenu();
 			addWallletBalance.clickOnWalletBalance();
-			transactionPage.getTransactionAmountForWallet(PurchaseSummaryPage.purchaseAmountThreeDigit+PurchaseSummaryPage.threeDigitTaxAmount-PurchaseSummaryPage.paidAmountFromWallet);
+//			transactionPage.getTransactionAmountForWallet(PurchaseSummaryPage.purchaseAmountThreeDigit+PurchaseSummaryPage.threeDigitTaxAmount-PurchaseSummaryPage.paidAmountFromWallet);
+			transactionPage.getTransactionAmountForWallet(tranamt);
 			transactionPage.getTransactionAmountForWalletPartiallyPayment(PurchaseSummaryPage.paidAmountFromWallet);			
 			commonMethod.backButton();
 			homePage.clickOnHomeMenu();
 		}
+		
+		public void logOut()
+		{
+			extentTestChild=extentTest.createNode("logOut");
+			Reporter.log("logOut",true);
+			Reporter.log("-----------------------------------------------",true);
+			homePage.clickOnHomeMenu();
+			addWallletBalance.clickOnMoreMenu();
+			addWallletBalance.clickOnCancelButton();
+			homePage.logOut();
+			}
+
 }

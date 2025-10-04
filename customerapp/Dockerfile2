@@ -1,0 +1,35 @@
+# ================================
+# Base image: Maven + Java 17
+# ================================
+FROM maven:3.9.6-eclipse-temurin-17
+
+# ================================
+# Install basic tools + Node.js + npm
+# ================================
+RUN apt-get update && apt-get install -y \
+     curl unzip git wget gnupg apt-transport-https \
+  && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+  && apt-get install -y nodejs \
+  && apt-get clean
+
+# ================================
+# Set working directory
+# ================================
+WORKDIR /app
+
+# ================================
+# Copy project files
+# ================================
+COPY . /app
+RUN mkdir -p /app/reports && chmod -R 777 /app/reports
+
+# ================================
+# Expose reports folder
+# ================================
+VOLUME ["/app/reports"]
+
+# ================================
+# Default command (bash shell)
+# Can be overridden with `mvn ...`
+# ================================
+CMD ["/bin/bash"]

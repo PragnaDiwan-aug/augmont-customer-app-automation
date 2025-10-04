@@ -20,15 +20,11 @@ public class TransactionPage extends BaseTest {
 	
 	
 	By transactionHistory=AppiumBy.xpath("//android.widget.Button[@content-desc='Transaction History']");
-	By amountfromTransactionHistory=AppiumBy.xpath(
-			  "//android.view.View[@content-desc='Latest \nInvestment']/following-sibling::android.view.View[1]//android.view.View[contains(@content-desc, 'Gold Bought')][1]"
-			);
-
-	By amountFromWalletFundHistory=AppiumBy.xpath("//android.widget.ImageView[@content-desc='Deposit Transaction Log']/following-sibling::android.view.View[1]//android.view.View[contains(@content-desc, 'Amount added to your Augmont Wallet')][1]"
-			);
-	By amountFromWalletFundHistoryPartiallPayEle=AppiumBy.xpath("//android.widget.ImageView[@content-desc='Deposit Transaction Log']/following-sibling::android.view.View[1]//android.view.View[contains(@content-desc, 'Amount added to your Augmont Wallet')][2]"
-			);
-
+	By amountfromTransactionHistory=AppiumBy.xpath("//android.view.View[@content-desc='Latest \nInvestment']/following-sibling::android.view.View[1]//android.view.View[contains(@content-desc, 'Gold Bought')][1]");
+	By amountfromTransactionHistorySilver=AppiumBy.xpath("//android.view.View[@content-desc='Latest \nInvestment']/following-sibling::android.view.View[1]//android.view.View[contains(@content-desc, 'Silver Bought')][1]");
+	By amountFromWalletFundHistory=AppiumBy.xpath("//android.widget.ImageView[@content-desc='Deposit Transaction Log']/following-sibling::android.view.View[1]//android.view.View[contains(@content-desc, 'Amount added to your Augmont Wallet')][1]");
+	By amountFromWalletFundHistoryPartiallPayEle=AppiumBy.xpath("//android.widget.ImageView[@content-desc='Deposit Transaction Log']/following-sibling::android.view.View[1]//android.view.View[contains(@content-desc, 'Amount added to your Augmont Wallet')][2]");
+	By sipViewAll=AppiumBy.xpath("//android.view.View[@content-desc='View All']");
 	public void clikOnTransactionHistoryTab()
 	{
 		Wait<AndroidDriver> wait = new FluentWait<>(driver)
@@ -58,6 +54,43 @@ public class TransactionPage extends BaseTest {
 
 	    wait.until(ExpectedConditions.elementToBeClickable(element));
 	    String rawAmountText = driver.findElement(amountfromTransactionHistory).getAttribute("content-desc");
+	    System.out.println("Raw content-desc: " + rawAmountText);
+
+	    // Extract and clean numeric part after ₹
+	    int rupeeIndex = rawAmountText.lastIndexOf("₹");
+	    String cleanedAmountText = rawAmountText.substring(rupeeIndex).replaceAll("[^0-9.]", "").trim();
+
+	    Reporter.log("Paid  Amount (Text): ₹" + cleanedAmountText, true);
+
+	    // Convert to BigDecimal
+	    BigDecimal actualAmount = new BigDecimal(cleanedAmountText).setScale(2, RoundingMode.DOWN);
+	    BigDecimal expectedAmountBD = BigDecimal.valueOf(expectedAmount).setScale(2, RoundingMode.HALF_UP);
+
+	    System.out.println("Parsed Actual Amount: ₹" + actualAmount);
+	    System.out.println("Expected Amount: ₹" + expectedAmountBD);
+
+	    // Compare using BigDecimal
+	    if (actualAmount.compareTo(expectedAmountBD) == 0) {
+	        Reporter.log("✅ Paid Amount verified. Expected: " + expectedAmountBD + ", Found: " + actualAmount, true);
+	        extentTestChild.pass("Paid Amount verified. Expected: " + expectedAmountBD + ", Found: " + actualAmount);
+	    } else {
+	        Reporter.log("❌ Paid Amount mismatch. Expected: " + expectedAmountBD + ", Found: " + actualAmount, true);
+	        extentTestChild.fail("Paid Amount mismatch. Expected: " + expectedAmountBD + ", Found: " + actualAmount);
+	    }
+	}
+	
+	public void getTransactionAmountForSilver(double expectedAmount) {
+	    // Wait for the element to be visible
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);        // Ignore exception			
+			WebElement element = wait.until(driver ->
+		    driver.findElement(amountfromTransactionHistorySilver)
+		);
+
+	    wait.until(ExpectedConditions.elementToBeClickable(element));
+	    String rawAmountText = driver.findElement(amountfromTransactionHistorySilver).getAttribute("content-desc");
 	    System.out.println("Raw content-desc: " + rawAmountText);
 
 	    // Extract and clean numeric part after ₹
@@ -181,6 +214,24 @@ public class TransactionPage extends BaseTest {
 	        extentTestChild.fail("Wallet Amount mismatch. Expected: ₹" + expectedAmountBD + ", Found: ₹" + actualAmount);
 	    }
 
+	}
+	
+	public void scrollAndClickMySip()
+	{
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 driver.findElement(AppiumBy.androidUIAutomator(
+			    "new UiScrollable(new UiSelector().scrollable(true))" +
+			    ".scrollIntoView(new UiSelector().description(\"My SIPs\"))"));
+		 
+		 wait.until(ExpectedConditions.elementToBeClickable(sipViewAll));	
+		driver.findElement(sipViewAll).click();   
+	    Reporter.log("Logged out of the app",true);
+	    extentTestChild.info("Logged out of the app");    
 	}
 
 }

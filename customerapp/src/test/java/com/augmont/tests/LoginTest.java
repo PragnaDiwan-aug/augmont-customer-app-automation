@@ -18,7 +18,8 @@ public class LoginTest extends BaseTest {
 	extentTestChild=extentTest.createNode("Login Method");
 	Reporter.log("Login Method",true);
 	Reporter.log("-----------------------------------------------",true);	
-	homePage.clickOnSkipLinkMethod();
+	//homePage.clickOnSkipLinkMethod();
+	homePage.clickOnNext();
 	homePage.clickOnSignInSignUpMethod();
 	homePage.clickOnRegisterLink();
 	homePage.mobileNumberTextBoxClick();
@@ -27,6 +28,6 @@ public class LoginTest extends BaseTest {
 	homePage.clickOnGenerateOTP();
 	homePage.insertOTP(getExcelData.getNumaricDataLong("LoginData",1,1));
 	homePage.handleSkipButtonIfPresent();
-	
+
 	}
 }

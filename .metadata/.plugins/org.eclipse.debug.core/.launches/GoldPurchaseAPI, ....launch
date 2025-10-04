@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.testng.eclipse.launchconfig">
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.testng.remote.RemoteTestNG"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="customerapp"/>
+    <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
+    <mapAttribute key="org.testng.eclipse.ALL_CLASS_METHODS">
+        <mapEntry key="com.augmont.api.GoldPurchaseAPI" value=""/>
+        <mapEntry key="com.augmont.base.BaseTest" value=""/>
+        <mapEntry key="com.augmont.constant.TestConstants" value=""/>
+        <mapEntry key="com.augmont.objectpages.AddWalletBalance" value=""/>
+        <mapEntry key="com.augmont.objectpages.CommonMethod" value=""/>
+        <mapEntry key="com.augmont.objectpages.HomePage" value=""/>
+        <mapEntry key="com.augmont.objectpages.PaymentPage" value=""/>
+        <mapEntry key="com.augmont.objectpages.PurchasePage" value=""/>
+        <mapEntry key="com.augmont.objectpages.PurchaseSummaryPage" value=""/>
+        <mapEntry key="com.augmont.objectpages.TransactionPage" value=""/>
+        <mapEntry key="com.augmont.test.basetestcases.PurchaseGold" value=""/>
+        <mapEntry key="com.augmont.test.basetestcases.PurchaseGoldSip" value=""/>
+        <mapEntry key="com.augmont.test.basetestcases.PurchaseSilver" value=""/>
+        <mapEntry key="com.augmont.test.basetestcases.PurchaseSilverSip" value=""/>
+        <mapEntry key="com.augmont.tests.AddWalletBalanceTest" value=""/>
+        <mapEntry key="com.augmont.tests.LoginTest" value=""/>
+        <mapEntry key="com.augmont.tests.PaymentMethodTest" value=""/>
+        <mapEntry key="com.augmont.tests.PurchaseMethodTest" value=""/>
+        <mapEntry key="com.augmont.tests.TransactionMethodTest" value=""/>
+        <mapEntry key="com.augmont.utility.AnnotationTransformer" value=""/>
+        <mapEntry key="com.augmont.utility.ConfigDataProvider" value=""/>
+        <mapEntry key="com.augmont.utility.ExtentReportManager" value=""/>
+        <mapEntry key="com.augmont.utility.GetExcelData" value=""/>
+        <mapEntry key="com.augmont.utility.Helper" value=""/>
+        <mapEntry key="com.augmont.utility.RetryAnalyzer" value=""/>
+        <mapEntry key="com.augmont.utility.TokenReader" value=""/>
+    </mapAttribute>
+    <listAttribute key="org.testng.eclipse.CLASS_TEST_LIST">
+        <listEntry value="com.augmont.test.basetestcases.PurchaseGold"/>
+        <listEntry value="com.augmont.objectpages.PurchaseSummaryPage"/>
+        <listEntry value="com.augmont.tests.PurchaseMethodTest"/>
+        <listEntry value="com.augmont.test.basetestcases.PurchaseGoldSip"/>
+        <listEntry value="com.augmont.base.BaseTest"/>
+        <listEntry value="com.augmont.utility.ConfigDataProvider"/>
+        <listEntry value="com.augmont.utility.TokenReader"/>
+        <listEntry value="com.augmont.test.basetestcases.PurchaseSilver"/>
+        <listEntry value="com.augmont.utility.RetryAnalyzer"/>
+        <listEntry value="com.augmont.tests.LoginTest"/>
+        <listEntry value="com.augmont.objectpages.PurchasePage"/>
+        <listEntry value="com.augmont.tests.TransactionMethodTest"/>
+        <listEntry value="com.augmont.objectpages.CommonMethod"/>
+        <listEntry value="com.augmont.utility.GetExcelData"/>
+        <listEntry value="com.augmont.utility.Helper"/>
+        <listEntry value="com.augmont.utility.AnnotationTransformer"/>
+        <listEntry value="com.augmont.objectpages.AddWalletBalance"/>
+        <listEntry value="com.augmont.utility.ExtentReportManager"/>
+        <listEntry value="com.augmont.objectpages.HomePage"/>
+        <listEntry value="com.augmont.constant.TestConstants"/>
+        <listEntry value="com.augmont.tests.PaymentMethodTest"/>
+        <listEntry value="com.augmont.test.basetestcases.PurchaseSilverSip"/>
+        <listEntry value="com.augmont.objectpages.TransactionPage"/>
+        <listEntry value="com.augmont.api.GoldPurchaseAPI"/>
+        <listEntry value="com.augmont.objectpages.PaymentPage"/>
+        <listEntry value="com.augmont.tests.AddWalletBalanceTest"/>
+    </listAttribute>
+    <booleanAttribute key="org.testng.eclipse.DEBUG" value="false"/>
+    <listAttribute key="org.testng.eclipse.GROUP_LIST"/>
+    <listAttribute key="org.testng.eclipse.GROUP_LIST_CLASS"/>
+    <stringAttribute key="org.testng.eclipse.LOG_LEVEL" value="2"/>
+    <listAttribute key="org.testng.eclipse.METHOD_TEST_LIST"/>
+    <listAttribute key="org.testng.eclipse.PACKAGE_TEST_LIST"/>
+    <stringAttribute key="org.testng.eclipse.PRE_DEFINED_LISTENERS" value=""/>
+    <stringAttribute key="org.testng.eclipse.PROTOCOL" value="json"/>
+    <intAttribute key="org.testng.eclipse.TYPE" value="1"/>
+    <booleanAttribute key="org.testng.eclipse.VERBOSE" value="false"/>
+</launchConfiguration>

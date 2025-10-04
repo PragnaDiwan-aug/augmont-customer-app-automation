@@ -1,0 +1,3 @@
+docker run --rm `
+  -v "C:\Users\Kamlesh Diwan\augmontCustomerApp\customerapp\reports:/app/reports" `
+  my-appium-image

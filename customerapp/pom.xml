@@ -88,10 +88,10 @@
                 <version>3.1.2</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>xmlfiles/testng.xml</suiteXmlFile>
+                        <suiteXmlFile>xmlfiles/${xmlFiles}</suiteXmlFile>
                     </suiteXmlFiles>
-                                    					<systemPropertyVariables>
-						<String>${PG}</String>					
+        	<systemPropertyVariables>
+            <PG>${pg}</PG>
 				 </systemPropertyVariables>
 
                 </configuration>

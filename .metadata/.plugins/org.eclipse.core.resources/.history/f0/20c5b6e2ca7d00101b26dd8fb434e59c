@@ -1,0 +1,57 @@
+package com.augmont.test.basetestcases;
+
+import java.io.IOException;
+
+import org.testng.annotations.Test;
+
+import com.augmont.base.BaseTest;
+import com.augmont.objectpages.AddWalletBalance;
+import com.augmont.objectpages.PurchaseSummaryPage;
+import com.augmont.tests.AddWalletBalanceTest;
+import com.augmont.tests.LoginTest;
+import com.augmont.tests.PaymentMethodTest;
+import com.augmont.tests.PurchaseMethodTest;
+import com.augmont.tests.TransactionMethodTest;
+
+public class PurchaseSilver extends BaseTest {
+	
+	LoginTest loginMethod=new LoginTest();
+	PurchaseMethodTest purchaseMethod=new PurchaseMethodTest();
+	PaymentMethodTest paymentMethod=new PaymentMethodTest();
+	TransactionMethodTest transactionMethod=new TransactionMethodTest();
+	AddWalletBalanceTest addWalletBalanceMethod=new AddWalletBalanceTest();
+
+	
+	
+	
+	@Test()
+	public void buySilver_ValidateOrder_TC001() throws IOException
+	{	
+		extentTest=extentReports.createTest("Buy Silver (One-Time) in Amount with Manually Enter Valuen, Payment Done using Netbanking, Then Validate Order Details");
+		extentTest.info("buySilver_ValidateOrder_TC001");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+		loginMethod.login();
+		addWalletBalanceMethod.verifyWalletAmountIsZero();
+		purchaseMethod.buySilverOneTimeWithManuallyEnteredAmount();
+		purchaseMethod.varifypurchaseSummaryForManuallyEnteredAmountOption();
+		paymentMethod.partialPaymentMethodUsingNetBanking();
+		transactionMethod.getTransactionAmountFromHistory(PurchaseSummaryPage.purchaseAmountThreeDigit+PurchaseSummaryPage.threeDigitTaxAmount);
+	}
+	
+	@Test()
+	public void buySilver_ValidateOrder_TC002()
+	{	
+		extentTest=extentReports.createTest("Buy Silver (One-Time) in Gram with Default Value, Payment Done using Netbanking, Then Validate Order Details");
+		extentTest.info("buySilver_ValidateOrder_TC002");
+		extentTest.assignCategory("Silver Purchase - Transaction Verification");
+		loginMethod.login();
+		addWalletBalanceMethod.verifyWalletAmountIsZero();
+		purchaseMethod.buySilverOneTimeWithGramsDefaultOption();
+		purchaseMethod.varifypurchaseSummaryForSilverGramOption(1,0.0);
+		paymentMethod.partialPaymentMethodUsingNetBanking();
+		transactionMethod.getTransactionAmountFromHistory(PurchaseSummaryPage.purchaseAmountThreeDigit+PurchaseSummaryPage.threeDigitTaxAmount);
+	}
+
+
+
+}

@@ -217,7 +217,7 @@ public class BaseTest {
         String port = prop.getProperty("port");
         String appiumJSPath = prop.getProperty("appium.js.path");
        // String apkPath = prop.getProperty("apkPath");
-        String apkPath = System.getProperty("user.dir") + File.separator + "resource" + File.separator + "uat_release_2307.apk";
+        String apkPath = System.getProperty("user.dir") + File.separator + "resource" + File.separator + "customer_uat30092.apk";
 
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win"))
@@ -225,8 +225,8 @@ public class BaseTest {
                 .withAppiumJS(new File(appiumJSPath))
                 .withIPAddress(ipAddress)
                 .usingPort(Integer.parseInt(port))
-                //.withArgument(GeneralServerFlag.ALLOW_INSECURE, "adb_shell")
-                //.withArgument(GeneralServerFlag.ALLOW_INSECURE, "chromedriver_autodownload")
+              //  .withArgument(GeneralServerFlag.ALLOW_INSECURE, "adb_shell")
+              //  .withArgument(GeneralServerFlag.ALLOW_INSECURE, "chromedriver_autodownload")
                 .withArgument(GeneralServerFlag.ALLOW_INSECURE, "adb_shell,chromedriver_autodownload")
                 .build();
         service.start();
@@ -241,32 +241,35 @@ public class BaseTest {
                     .withAppiumJS(new File(appiumMainJs))
                     .withIPAddress(ipAddress)
                     .usingPort(Integer.parseInt(port))
-                    //.withArgument(GeneralServerFlag.ALLOW_INSECURE, "adb_shell")
-                    //.withArgument(GeneralServerFlag.ALLOW_INSECURE, "chromedriver_autodownload")
-                    .withArgument(GeneralServerFlag.ALLOW_INSECURE, "adb_shell,chromedriver_autodownload")
+                //    .withArgument(GeneralServerFlag.ALLOW_INSECURE, "adb_shell")
+                //    .withArgument(() -> "--allow-insecure", "adb_shell")
+
+                    .withArgument(GeneralServerFlag.ALLOW_INSECURE, "chromedriver_autodownload")
                     .build();
             service.start();
         }
        
         
         UiAutomator2Options options = new UiAutomator2Options()
-                .setDeviceName("android34")
+                .setDeviceName("android-34")
                 .setApp(apkPath)
                 .setAutomationName("UiAutomator2")
                 .setAppWaitActivity("*")
                 .setAppWaitDuration(Duration.ofSeconds(60))
                 .setAutoGrantPermissions(true)
-                .setNoReset(false)
-             //   .setFullReset(true)
+               .setNoReset(false)
+                //.setFullReset(true)
                 .setFullReset(false)
                 .amend("unicodeKeyboard", true)
                 .amend("resetKeyboard", true)
         .amend("uiautomator2ServerInstallTimeout", 60000) // Increase to 60 seconds
         .amend("adbExecTimeout", 60000)
         .amend("chromedriver_autodownload", true);
+      // .amend("otherApps", "C:\\Users\\Kamlesh Diwan\\augmontCustomerApp\\customerapp\\resource\\app-yes-hub-intent.apk");
 
 
         driver = new AndroidDriver(new URL("http://localhost:4723"), options);
+
 
 try {
 	Thread.sleep(5000);

@@ -18,23 +18,34 @@ public class PaymentMethodTest extends  BaseTest {
 	HomePage homePage=new HomePage();
 	GoldPurchaseAPI goldPurchaseAPI=new GoldPurchaseAPI();
 	CommonMethod commonMethod  =new CommonMethod();
-	public void makePaymentViaNetBanking()
+	
+	public void paymentViaNetBankingWithEmandate()
 	{
 	extentTestChild = extentTest.createNode("Make Payment via Net Banking");
 	Reporter.log("Payment with netBanking",true);
 	Reporter.log("-----------------------------------------------",true);
-	paymentPage.clickOnAmanteButton();
 	paymentPage.selectBank();
 	paymentPage.clickOnSubmitBtn();
 	paymentPage.clicOnAuthenticButton();
 	paymentPage.clickOnNetBankingBtn();
-	paymentPage.clicOnAuthenticButton2();
+	paymentPage.clicOnAuthenticButton();
 	paymentPage.clickOnSucessBtn();
-	paymentPage.getToastMessageoneTimeBuyGold();
-	homePage.clickOnHomeMenu();
+	paymentPage.verifySucessMessagePurchaseSip(PaymentPage.congratulationMsg, PaymentPage.PurchaseGoldSipMsg);
 	}
 	
-	
+	public void failureMethodNetBankingWithEMandate()
+	{
+	extentTestChild = extentTest.createNode("Payment Failure and Response Verification");
+	Reporter.log(" Payment Failure and Response Verification",true);
+	Reporter.log("-----------------------------------------------",true);
+	paymentPage.selectBank();
+	paymentPage.clickOnSubmitBtn();
+	paymentPage.clicOnAuthenticButton();
+	paymentPage.clickOnNetBankingBtn();
+	paymentPage.clicOnAuthenticButton();
+	paymentPage.clickOnFailureBtnEmandateNetbanking();
+	paymentPage.verifyFailureMessageNetBankingPurchaseSipEmandate();
+	}
 	
 	public void paymentMethodUsingCard(double netPayableAmount) throws IOException
 	{
@@ -50,7 +61,7 @@ public class PaymentMethodTest extends  BaseTest {
 	//tokenReader.tokenReadder();
 	//goldPurchaseAPI.getTemporaryOrderDetail("https://gold-loan-backend-api.gfau.augmont.com/api/customer/app/customer-wallet/pay", TokenReader.Token.trim());	
 	//goldPurchaseAPI.getStatus("https://gold-loan-backend-api.gfau.augmont.com/api/digital-gold/buy/status", GoldPurchaseAPI.TempOrderId);
-//	paymentPage.clickContinueToPaymentButton();
+	paymentPage.clickContinueToPaymentButton();
 	commonMethod.switchToWebView();
 	paymentPage.clickRazorpayCardOption();
 	paymentPage.enterCardNumberOnRazorpay();
@@ -60,12 +71,38 @@ public class PaymentMethodTest extends  BaseTest {
 //	paymentPage.enterEmailIDRazorPay("test@gmail.com");
 	paymentPage.clickOnContinueRazorPay();
 	paymentPage.clickOnMaybeLaterButton();
+//	paymentPage.clickOnContinueAndPayRazorPay();
 	paymentPage.enterOtpRazorPay("123456");
 	paymentPage.clickOnContinueRazorPayAfterEnterOTP();
 	commonMethod.switchToNativeContext();
 	paymentPage.getCardPaymentSucessMessage();
 	}
 	
+	else if	(PaymentGateway.equalsIgnoreCase("RazorPay1"))
+	{
+extentTestChild.info("Payment Gateway is:"+PaymentGateway);
+paymentPage.waitForDefaultUpiOptionToBeVisible();
+//paymentPage.verifyPaymentAmountOnPaymentPageRazorPay(netPayableAmount);
+//TokenReader tokenReader=new TokenReader();
+//tokenReader.tokenReadder();
+//goldPurchaseAPI.getTemporaryOrderDetail("https://gold-loan-backend-api.gfau.augmont.com/api/customer/app/customer-wallet/pay", TokenReader.Token.trim());	
+//goldPurchaseAPI.getStatus("https://gold-loan-backend-api.gfau.augmont.com/api/digital-gold/buy/status", GoldPurchaseAPI.TempOrderId);
+//paymentPage.clickContinueToPaymentButton();
+//commonMethod.switchToWebView();
+paymentPage.clickRazorpayCardOptionNativeView();
+paymentPage.enterCardNumberRazorPayNative();
+paymentPage.enterExpiryDateCard();
+paymentPage.enterCVVNumber();
+//paymentPage.enterCardHolderNameRazorPay("test");
+//paymentPage.enterEmailIDRazorPay("test@gmail.com");
+paymentPage.clickOnContinue();
+paymentPage.clickOnMaybeLaterButton();
+//paymentPage.clickOnContinueAndPayRazorPay();
+paymentPage.enterOtpRazorPay("123456");
+paymentPage.clickOnContinueRazorPayAfterEnterOTP();
+commonMethod.switchToNativeContext();
+paymentPage.getCardPaymentSucessMessage();
+}
 
 	else if(PaymentGateway.equalsIgnoreCase("PhonePay"))
 		{
@@ -73,7 +110,7 @@ public class PaymentMethodTest extends  BaseTest {
 paymentPage.clickOnCardOption();
 paymentPage.verifyPaymentAmountOnPaymentPage(netPayableAmount);
 //goldPurchaseAPI.getTemporaryOrderDetail("https://gold-loan-backend-api.gfau.augmont.com/api/customer/app/customer-wallet/pay", TokenReader.Token);	
-goldPurchaseAPI.getStatus("https://gold-loan-backend-api.gfau.augmont.com/api/digital-gold/buy/status", GoldPurchaseAPI.TempOrderId);
+//goldPurchaseAPI.getStatus("https://gold-loan-backend-api.gfau.augmont.com/api/digital-gold/buy/status", GoldPurchaseAPI.TempOrderId);
 paymentPage.enterCardNumber();
 paymentPage.enterCardHolderName("tes");
 paymentPage.enterExpiryDateCard();
@@ -85,35 +122,106 @@ paymentPage.getCardPaymentSucessMessage();
 }
 
 	}
-	public void paymentMethodUsingUPI()
+	public void paymentMethodUsingUPI(double payamt)
 	{
 	extentTestChild=extentTest.createNode("Payment Processed Via UPI");
 	Reporter.log("Payment Processed Via UPI",true);
 	Reporter.log("-----------------------------------------------",true);
+	if(PaymentGateway.equalsIgnoreCase("PhonePay"))
+	{
 	paymentPage.selectUPIRadioButton();
 	paymentPage.selectUPI("PhonePe");
 	paymentPage.enterUPINumber("success");
 	paymentPage.clickOnVerifyUPIID();
 	paymentPage.verifyUPIIDSucessMessage();
-	paymentPage.verifyPaymentAmountOnPaymentPage(PurchaseSummaryPage.netPayAmount);
+	paymentPage.verifyPaymentAmountOnPaymentPage(payamt);
 	paymentPage.clickOnPayButton();
 	paymentPage.getCardPaymentSucessMessage();
 	}
+	else if(PaymentGateway.equalsIgnoreCase("RazorPay"))
+	{
+		paymentPage.waitForDefaultUpiOptionToBeVisible();
+		paymentPage.clickContinueToPaymentButton();
+		commonMethod.switchToWebView();
+		paymentPage.clickOnUpiBtnRazorPay();
+		paymentPage.selectBankForNetBankingRazorPay("SBIN");
+		paymentPage.clickOnSucessButtonRazorPay();
+		commonMethod.switchToNativeContext();
+		paymentPage.getCardPaymentSucessMessage();
 
-	public void partialPaymentMethodUsingNetBanking()
+
+	}
+	}
+
+	public void partialPaymentMethodUsingNetBanking(String msg1,String msg2,double amount)
 	{
 	extentTestChild=extentTest.createNode("Payment Processed Via NetBanking");
 	Reporter.log("Payment Processed Via NetBanking",true);
 	Reporter.log("-----------------------------------------------",true);
+	if(PaymentGateway.equalsIgnoreCase("PhonePay"))
+	{
 	paymentPage.clickOnNetBankingOption();
 	paymentPage.selectBankForNetBankingPartialPayment("State bank Of India");
-	paymentPage.verifyPaymentAmountOnPaymentPage(PurchaseSummaryPage.totalPurAmount-PurchaseSummaryPage.paidAmountFromWallet);;
+	paymentPage.verifyPaymentAmountOnPaymentPage(amount);;
 	paymentPage.clickOnPayButton();
 	paymentPage.clickOnSucessCardButton();
 	paymentPage.clickOnSubmitCardButton();
-	paymentPage.getToastMessageoneTimeBuyGold();
+	paymentPage.getToastMessageoneTimeBuyMetal(msg1,msg2);
 	Reporter.log("-----------------------------------------------",true);
-
+	}
+	else if(PaymentGateway.equalsIgnoreCase("RazorPay"))
+	{
+extentTestChild.info("Payment Gateway is:"+PaymentGateway);
+paymentPage.waitForDefaultUpiOptionToBeVisible();
+//paymentPage.verifyPaymentAmountOnPaymentPageRazorPay(netPayableAmount);
+//TokenReader tokenReader=new TokenReader();
+//tokenReader.tokenReadder();
+//goldPurchaseAPI.getTemporaryOrderDetail("https://gold-loan-backend-api.gfau.augmont.com/api/customer/app/customer-wallet/pay", TokenReader.Token.trim());	
+//goldPurchaseAPI.getStatus("https://gold-loan-backend-api.gfau.augmont.com/api/digital-gold/buy/status", GoldPurchaseAPI.TempOrderId);
+paymentPage.clickContinueToPaymentButton();
+commonMethod.switchToWebView();
+paymentPage.clickThirdNetbankingOption();
+paymentPage.selectBankForNetBankingRazorPay("SBIN");
+paymentPage.clickOnSucessButtonRazorPay();
+commonMethod.switchToNativeContext();
+paymentPage.getCardPaymentSucessMessage();
+	}
+	}
+	public void verifyPaymentUsingNetBankingFailureResponse(double payamt)
+	{
+	extentTestChild=extentTest.createNode("Payment Processed Via NetBanking for Failure Response");
+	Reporter.log("Payment Processed Via NetBanking for Failure Response",true);
+	Reporter.log("-----------------------------------------------",true);
+	if(PaymentGateway.equalsIgnoreCase("PhonePay"))
+	{
+	paymentPage.clickOnNetBankingOption();
+	paymentPage.selectBankForNetBankingPartialPayment("State bank Of India");
+	paymentPage.verifyPaymentAmountOnPaymentPage(payamt);;
+	paymentPage.clickOnPayButton();
+	paymentPage.clickOnFailureNetbankingButton();
+	paymentPage.clickOnSubmitCardButton();
+	paymentPage.verifyFailureMessageNetBanking();
+	Reporter.log("-----------------------------------------------",true);
+	}
+	else if(PaymentGateway.equalsIgnoreCase("RazorPay"))
+	{
+		extentTestChild.info("Payment Gateway is:"+PaymentGateway);
+		paymentPage.waitForDefaultUpiOptionToBeVisible();
+//paymentPage.verifyPaymentAmountOnPaymentPageRazorPay(netPayableAmount);
+//TokenReader tokenReader=new TokenReader();
+//tokenReader.tokenReadder();
+//goldPurchaseAPI.getTemporaryOrderDetail("https://gold-loan-backend-api.gfau.augmont.com/api/customer/app/customer-wallet/pay", TokenReader.Token.trim());	
+//goldPurchaseAPI.getStatus("https://gold-loan-backend-api.gfau.augmont.com/api/digital-gold/buy/status", GoldPurchaseAPI.TempOrderId);
+paymentPage.clickContinueToPaymentButton();
+commonMethod.switchToWebView();
+paymentPage.clickThirdNetbankingOption();
+paymentPage.selectBankForNetBankingRazorPay("SBIN");
+paymentPage.clickOnFailureButtonRazorPay();
+commonMethod.switchToNativeContext();
+paymentPage.verifyFailureMessage();
+	}
+	
+	
 	}
 
 }
