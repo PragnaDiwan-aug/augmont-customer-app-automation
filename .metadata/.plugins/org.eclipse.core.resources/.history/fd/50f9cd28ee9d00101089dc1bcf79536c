@@ -1,9 +1,0 @@
-ipAddress=127.0.0.1
-port =4723
-browser=chrome
-AndroidDeviceName=android
-appium.js.path=C:\\Users\\Kamlesh Diwan\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js
-apkPath=C:\\Users\\Kamlesh Diwan\\augmontCustomerApp\\customerapp\\resource\\customer_uat18091.apk
-card.number=6521818104823671
-card.expiry=12/25
-card.cvv=123

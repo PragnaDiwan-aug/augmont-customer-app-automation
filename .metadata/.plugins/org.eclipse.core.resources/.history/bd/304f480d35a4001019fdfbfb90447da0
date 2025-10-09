@@ -1,0 +1,200 @@
+package com.augmont.objectpages;
+
+import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import org.testng.Assert;
+import org.testng.Reporter;
+
+import com.augmont.base.BaseTest;
+
+import io.appium.java_client.AppiumBy;
+import io.appium.java_client.android.AndroidDriver;
+
+public class AddWalletBalance extends BaseTest {
+	public static double intialWalletBal=0.0;
+	
+	
+	By moreMenu=AppiumBy.accessibilityId("More");
+	By cancelBtn=AppiumBy.accessibilityId("Cancel");
+	By walletBalance=AppiumBy.xpath("//android.view.View[contains(@content-desc, 'Wallet Balance')]");
+	By addfundElement=AppiumBy.accessibilityId("Add Funds");
+	By addAmountElement=AppiumBy.xpath("//android.view.View[@content-desc='  OR  ']/following-sibling::android.widget.EditText");
+	By topUpElement=AppiumBy.accessibilityId("Top-up");
+	By payOnline=AppiumBy.accessibilityId("Pay Online");
+	By depositAmtele=AppiumBy.xpath("//android.view.View[@content-desc='Enter Deposit Amount']/following-sibling::android.view.View[@content-desc='₹']/following-sibling::android.widget.EditText");
+	
+	
+	
+	
+	public void clickOnMoreMenu()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(60))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(moreMenu)
+			);
+			wait.until(ExpectedConditions.elementToBeClickable(element));
+			element.click();
+	    Reporter.log("Click Perform on More Menu",true);
+	    extentTestChild.info("Click perform on More Menu");    
+	}	
+	public void clickOnCancelButton()
+	{
+	    try {
+	        Wait<AndroidDriver> wait = new FluentWait<>(driver)
+	                .withTimeout(Duration.ofSeconds(50))
+	                .pollingEvery(Duration.ofMillis(500))
+	                .ignoring(NoSuchElementException.class);
+
+	        WebElement element = wait.until(driver ->
+	                driver.findElement(cancelBtn)
+	        );
+
+	        wait.until(ExpectedConditions.elementToBeClickable(cancelBtn));
+	        element.click();
+
+	        Reporter.log("Click performed on Cancel Button", true);
+	        extentTestChild.info("Click performed on Cancel Button");  
+	    }
+	    catch (TimeoutException e) {
+	        Reporter.log("Cancel Button not found or not clickable within timeout", true);
+	        extentTestChild.info("Cancel Button not found or not clickable within timeout");  
+	    }
+	   
+	    catch (Exception e) {
+	        Reporter.log("Unexpected error during Cancel Button click: " + e.getMessage(), true);
+	        extentTestChild.info("Unexpected error during Cancel Button click: " + e.getMessage());  
+	    }
+	}
+
+	public double getWalletBalance()
+	{
+		
+			wait.until(ExpectedConditions.visibilityOfElementLocated(walletBalance));
+			WebElement walletElement = driver.findElement(walletBalance);
+			String samount = walletElement.getAttribute("content-desc");
+			String amountString = samount.replaceAll("[^0-9.]", "");
+			double amountValue = Double.parseDouble(amountString);
+			Reporter.log("Wallet Balance is:"+amountValue,true);
+			extentTestChild.info("Wallet Balance is:"+amountValue);
+			intialWalletBal=amountValue;
+			return amountValue;
+	}
+	public void checkWalletCondition(double walletbal)
+	{
+		if(intialWalletBal==walletbal)
+		{
+			Reporter.log("Starting wallet balance is varified:"+intialWalletBal,true);
+			extentTestChild.pass("Starting wallet balance is varified:"+intialWalletBal);
+			
+		}
+		else
+		{
+			Reporter.log("Starting wallet balance is not varified:"+"Actual:"+intialWalletBal+"Expected:"+walletbal,true);
+			extentTestChild.fail("Starting wallet balance is not varified:"+"Actual:"+intialWalletBal+"Expected:"+walletbal);
+			Assert.assertEquals(intialWalletBal, walletbal);
+
+		}
+	}
+	
+	
+	public void clickOnWalletBalance()
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(40))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(walletBalance)
+			);
+			element.click();
+		Reporter.log("Click perform on Wallet Balance",true);
+		extentTestChild.info("Click perform on Wallet Balance");
+	}
+	public void clickOnAddFund()
+	{
+	    wait.until(ExpectedConditions.visibilityOfElementLocated(addfundElement));
+	    driver.findElement(addfundElement).click();
+	    Reporter.log("Click Perform on Add Fund Button",true);
+	    extentTestChild.info("Click Perform on Add Fund Button");    
+	}	
+	
+	public void addCustomTopUpValue(int walletbal)
+	{
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(30))             // Total wait time
+			    .pollingEvery(Duration.ofSeconds(2))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(addAmountElement)
+			);
+			element.click();
+			element.clear();
+			element.sendKeys(String.valueOf(walletbal));
+	    Reporter.log("Fund Value is:"+walletbal,true);
+	    extentTestChild.info("Fund value is:"+walletbal);  
+	}
+	public void clickOnTopUpButton()
+	{
+	    wait.until(ExpectedConditions.visibilityOfElementLocated(topUpElement));
+	    driver.findElement(topUpElement).click();
+	    Reporter.log("Click Perform on Topup Button",true);
+	    extentTestChild.info("Click perform on TopUp Button");    
+	}	
+	public void clickOnPayOnlineButton()
+	{
+	    wait.until(ExpectedConditions.visibilityOfElementLocated(payOnline));
+	    driver.findElement(payOnline).click();
+	    try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    driver.findElement(payOnline).click();
+	    Reporter.log("Click Perform on Pay Online Button",true);
+	    extentTestChild.info("Click Perform on Pay Online Button");    
+	}	
+	public void depositAmount(int depositAmt)
+	{
+	    wait.until(ExpectedConditions.visibilityOfElementLocated(depositAmtele));
+	    driver.findElement(depositAmtele).sendKeys(String.valueOf(depositAmt));
+	    Reporter.log("Deposit Amount is:"+depositAmt,true);
+	    extentTestChild.info("Deposit Amount is:"+depositAmt);
+	}
+
+
+	public double verifyWalletBalance(double expected)
+	{
+			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(walletBalance));
+			WebElement walletElement = driver.findElement(walletBalance);
+			String samount = walletElement.getAttribute("content-desc");
+			String amountString = samount.replaceAll("[^0-9.]", "");
+			double amountValue = Double.parseDouble(amountString);
+			if(amountValue==expected)
+			{
+			Reporter.log("Wallet Balance is varified:"+amountValue,true);
+			extentTestChild.pass("Wallet Balance is not varified:"+amountValue);
+			}
+			else
+			{
+				Reporter.log("Wallet Balance is not  varified:"+amountValue,true);
+				extentTestChild.fail("Wallet Balance is not varified:"+amountValue);
+			}
+			return amountValue;
+	}
+
+
+}

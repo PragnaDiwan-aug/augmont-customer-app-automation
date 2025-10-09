@@ -1,0 +1,21 @@
+package com.augmont.test.basetestcases;
+
+import com.augmont.base.BaseTest;
+
+public class WithdrawalFlowTest extends BaseTest{
+	
+//	@Test()
+//	public void WITHDRAWAL_TC_01()
+//	{	
+//		extentTest=extentReports.createTest("Verify Gold Withdrawal With Bank Deposit amount transfer to wallet");
+//		extentTest.info("purchaseGoldAndVarifyDetail_TC001");
+//		extentTest.assignCategory("Gold Purchase - Transaction Verification");
+//		loginMethod.login();
+//		purchaseMethod.createSipGoldWeekly(getExcelData.getNumaricDataInt("PurchaseData",3,2));
+//		purchaseMethod.verifySipSummary();
+//		paymentMethod.paymentViaNetBankingWithEmandate();
+//		
+//	}
+
+
+}

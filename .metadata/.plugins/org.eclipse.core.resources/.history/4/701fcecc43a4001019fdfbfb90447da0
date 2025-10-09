@@ -1,0 +1,44 @@
+package com.augmont.test.basetestcases;
+
+import org.testng.annotations.Test;
+
+import com.augmont.base.BaseTest;
+import com.augmont.tests.AddWalletBalanceTest;
+import com.augmont.tests.LoginTest;
+import com.augmont.tests.WithdrawlTest;
+
+public class WithdrawalFlowTest extends BaseTest{
+	
+	LoginTest loginMethod=new LoginTest();
+	WithdrawlTest withdrawlTest=new WithdrawlTest();
+	AddWalletBalanceTest addWalletBalanceTest=new AddWalletBalanceTest();
+	@Test()
+	public void WITHDRAWAL_TC_01()
+	{	
+		extentTest=extentReports.createTest("Verify Gold Withdrawal With Bank Deposit amount transfer to wallet");
+		extentTest.info("WITHDRAWAL_TC_01");
+		extentTest.assignCategory("Gold Withdawal Verification");
+		loginMethod.login();
+		addWalletBalanceTest.getWalletBalanceTest();
+		withdrawlTest.withdrawlMethodUsingBankDeposit();
+		withdrawlTest.verifyWithdrwalSummary();
+		withdrawlTest.verifyWithdrawAndCancelButtonFunctionality();
+		withdrawlTest.verifyWithdrawalDetails();
+	}
+
+	
+	public void WITHDRAWAL_TC_02()
+	{	
+		extentTest=extentReports.createTest("Verify Gold Withdrawal With Bank Deposit amount transfer to wallet");
+		extentTest.info("purchaseGoldAndVarifyDetail_TC001");
+		extentTest.assignCategory("Gold Purchase - Transaction Verification");
+		loginMethod.login();
+		addWalletBalanceTest.getWalletBalanceTest();
+		withdrawlTest.withdrawlMethodUsingBankDeposit();
+		withdrawlTest.verifyWithdrwalSummary();
+		withdrawlTest.verifyWithdrawAndCancelButtonFunctionality();
+		withdrawlTest.verifyWithdrawalDetails();
+	}
+
+
+}

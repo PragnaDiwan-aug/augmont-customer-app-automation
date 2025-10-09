@@ -1,0 +1,14 @@
+package com.augmont.tests;
+
+import com.augmont.base.BaseTest;
+
+public class WithdrawlTest extends BaseTest {
+	
+	
+	public void withdrawlMethodUsingBankDeposit()
+	{
+		extentTestChild=extentTest.createNode("Verify Gold Withdrawal With Bank Deposit");
+
+	}
+
+}

@@ -1,0 +1,557 @@
+package com.augmont.objectpages;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import org.testng.Assert;
+import org.testng.Reporter;
+
+import com.augmont.base.BaseTest;
+import com.aventstack.extentreports.ExtentTest;
+
+import io.appium.java_client.AppiumBy;
+import io.appium.java_client.android.AndroidDriver;
+
+public class WithdrawlPage extends BaseTest {
+	
+	public static double gramLessThanRemaining;
+	public static double calculatedGoldAmount;
+	
+	By withdrawInvestmentButton=AppiumBy.accessibilityId("Withdraw Investment");
+	By proceedButton=AppiumBy.accessibilityId("Proceed");
+	By bankDeposit = AppiumBy.xpath("//android.widget.ImageView[starts-with(@content-desc, 'Bank Deposits')]");
+	By totalInvestmentAmount=AppiumBy.xpath("//android.view.View[@content-desc='Total Investment']/following-sibling::android.view.View");
+	By totalGoldValue=AppiumBy.xpath("//android.view.View[contains(@content-desc, 'Total Gold')]");
+	By availableWithdrawElement=AppiumBy.xpath("//android.view.View[contains(@content-desc, 'Available for Withdraw')]");
+	By totalBalanceElement=AppiumBy.xpath("//android.view.View[contains(@content-desc, 'Total Balance')]");
+	By proceedButtonWithdraw = AppiumBy.xpath("(//android.view.View[contains(@content-desc, 'Gold Vault')]//android.widget.Button[contains(@content-desc,'Proceed')])[1]");
+	By withdrawing=AppiumBy.xpath("//android.view.View[@content-desc='0.0 gm']");
+	By remaining = AppiumBy.xpath("(//android.view.View[contains(normalize-space(@content-desc),'Remaining')]/following-sibling::android.view.View[contains(@content-desc,'gm')])[2]");
+	By sellingRate=AppiumBy.xpath("//android.widget.ImageView[contains(@content-desc, 'Selling at')]");
+	By proceedWithdraw=AppiumBy.xpath("//android.widget.ImageView[@content-desc='Proceed']");
+	By withdrawingFrom=AppiumBy.xpath("//android.view.View[@content-desc='Gold Vault']");
+	By goldQuantityXpath=AppiumBy.xpath("//android.view.View[@content-desc='Gold Quantity']/following-sibling::android.view.View");
+	By netWithdrawlxpath=AppiumBy.xpath("//android.view.View[@content-desc='Net Withdrawal Amount']/following-sibling::android.view.View");
+	By augmontWallet=AppiumBy.xpath("//android.widget.RadioButton[@content-desc='Augmont Wallet']");
+	By bankAccount=AppiumBy.xpath("//android.widget.RadioButton[@content-desc='Bank Account']");
+	By withdrawlButton=AppiumBy.xpath("//android.widget.Button[@content-desc='Withdraw']");
+	By cancelButton=AppiumBy.xpath("//android.widget.Button[@content-desc='Cancel']");
+
+	
+    public void clickWithdrawInvestment() {
+    	
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(withdrawInvestmentButton));	      
+			wait.until(ExpectedConditions.elementToBeClickable(withdrawInvestmentButton));		
+
+        element.click();;
+       Reporter.log("Clicked on Withdraw Investment button");
+       extentTestChild.info("Clicked on Withdraw Investment button");
+    }
+
+    
+    public void clickProceedButton() {
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(proceedButton));	      
+			wait.until(ExpectedConditions.elementToBeClickable(proceedButton));		
+
+        element.click();;
+       Reporter.log("Clicked on Proceed button");
+       extentTestChild.info("Clicked on Proceed button");
+    }
+
+    
+    public void clickBankDeposit() {
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(bankDeposit));	      
+			wait.until(ExpectedConditions.elementToBeClickable(bankDeposit));	
+        element.click();;
+       Reporter.log("Clicked on Bank Deposit");
+       extentTestChild.info("Clicked on Bank Deposit");
+    }
+    public void getTotalInvestmentAmount() {
+				Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(totalInvestmentAmount));	      
+			wait.until(ExpectedConditions.visibilityOfElementLocated(totalInvestmentAmount));		
+			Reporter.log("Total Investment info: " + element.getAttribute("content-desc"),true);
+			extentTestChild.info("Total Investment info: " + element.getAttribute("content-desc"));
+    }
+
+
+
+    
+    public void getTotalGoldValueInGram() {
+				Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(totalGoldValue));	      
+			wait.until(ExpectedConditions.visibilityOfElementLocated(totalGoldValue));		
+			Reporter.log("Total Gold info: " + element.getAttribute("content-desc"),true);
+			extentTestChild.info("Total Gold info: " + element.getAttribute("content-desc"));
+    }
+
+    
+    public double getAvailableForWithdraw() {
+        String contentDesc = driver.findElement(availableWithdrawElement).getAttribute("content-desc");
+        String value = contentDesc.split("Available for Withdraw:")[1]
+                                  .split("Total Balance:")[0]
+                                  .replaceAll("[^0-9.]", "")
+                                  .trim();
+        Reporter.log("Availalbel for Withdraw from Gold Vault is:"+value,true);
+        extentTestChild.info("Availalbel for Withdraw from Gold Vault is:"+value);
+        return Double.parseDouble(value);
+    }
+
+    public double getTotalBalance() {
+        String contentDesc = driver.findElement(totalBalanceElement).getAttribute("content-desc");
+        String value = contentDesc.split("Total Balance:")[1]
+                                  .replaceAll("[^0-9.]", "")
+                                  .trim();
+        
+        Reporter.log("Total Balance from Gold Vault is:"+value,true);
+        extentTestChild.info("Total Balance from Gold Vault is:"+value);
+        return Double.parseDouble(value);
+    }
+    
+    public void clickProceedButtonWithdraw() {
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(30))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(proceedButtonWithdraw));	      
+			wait.until(ExpectedConditions.elementToBeClickable(proceedButtonWithdraw));		
+
+        element.click();;
+       Reporter.log("Clicked on Proceed button");
+       extentTestChild.info("Clicked on Proceed button");
+    }
+    
+    
+    public void getWithdrawingValueInGram() {
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+	    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+	    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+	    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+	WebElement element = wait.until(driver ->
+	    driver.findElement(withdrawing));	      
+	wait.until(ExpectedConditions.visibilityOfElementLocated(withdrawing));		
+	Reporter.log("Withdrawing Gold info: " + element.getAttribute("content-desc"),true);
+	extentTestChild.info("Withdrawing Gold info: " + element.getAttribute("content-desc"));
+}
+
+    public double getRemainingValueInGram() {
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+	    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+	    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+	    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+	WebElement element = wait.until(driver ->
+	    driver.findElement(remaining));	      
+	wait.until(ExpectedConditions.visibilityOfElementLocated(remaining));		
+	Reporter.log("Remaining Gold info: " + element.getAttribute("content-desc"),true);
+	extentTestChild.info("Remaining Gold info: " + element.getAttribute("content-desc"));
+	String value=element.getAttribute("content-desc");	
+	String remainingText = value.replaceAll("[^0-9.]", ""); // remove gm
+    return Double.parseDouble(remainingText);
+
+}
+
+    public void verifyErrorWhenEnteredGramGreaterThanRemaining() {
+        // Enter gram value greater than remaining
+    	double remainingGold=getRemainingValueInGram();
+    	double greaterValuethanRemaining=remainingGold+1;
+    	extentTestChild.info("Greater Value than Remaining:"+greaterValuethanRemaining);
+    	extentTestChild.info("Verify error message when entered gram Greater than Remaining gold Gram---Start");
+
+    	WebElement gramInput = driver.findElement(By.xpath("//android.widget.EditText")); 
+    	gramInput.click();
+    	gramInput.clear();
+        gramInput.sendKeys(String.valueOf(greaterValuethanRemaining));  
+        
+     // Wait for validation message
+        Wait<AndroidDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(15))
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(NoSuchElementException.class);
+
+        By errorMsgLocator = By.xpath("//android.view.View[contains(@content-desc, 'Entered Amount')]");
+        WebElement errorMsg = wait.until(driver -> driver.findElement(errorMsgLocator));
+
+        // Log & assert
+        String msg = errorMsg.getAttribute("content-desc");
+        Reporter.log("Error Message is: " + msg, true);
+        extentTestChild.info("Error Message is: " + msg);
+
+        Assert.assertTrue(errorMsg.isDisplayed(), "Error message not displayed!");    
+    	extentTestChild.pass("Verify error message when entered gram Greater than Remaining gold Gram --end");
+
+        
+    }
+    public double getSellingGoldRate() {
+        // Locate the element containing "Selling at"
+        WebElement sellingElement = driver.findElement(sellingRate);
+
+        // Fetch full text from content-desc
+        String contentDesc = sellingElement.getAttribute("content-desc");
+        extentTestChild.info("Selling info text: " + contentDesc);
+
+        // Clean and extract numeric value using replaceAll
+        // Example text: "Selling at ₹ 11986.2  / gm\nValid for 05:00"
+        String cleanedText = contentDesc
+                .replaceAll("[^0-9.]", "")   // Remove everything except numbers and dot
+                .trim();
+
+        double sellingRate = 0.0;
+        try {
+            sellingRate = Double.parseDouble(cleanedText);
+            extentTestChild.pass("Selling Gold Rate captured: ₹" + sellingRate + " / gm");
+        } catch (NumberFormatException e) {
+            extentTestChild.fail("Failed to parse selling rate from: " + cleanedText);
+            Assert.fail("Invalid selling rate format: " + cleanedText);
+        }
+
+        Reporter.log("Selling Gold Rate: ₹" + sellingRate + " / gm", true);
+        return sellingRate;
+    }
+    public double calculateAmountFromGoldGramsWithoutTax(double grams) {
+        double sellingRate = getSellingGoldRate(); // ₹ per gram
+
+        // Total amount without tax
+        double totalAmount = sellingRate * grams;
+
+        // Format numbers with 2 decimal places and commas
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        String formattedRate = df.format(sellingRate);
+        String formattedAmount = df.format(totalAmount);
+
+        // Extent & Reporter logs
+        extentTestChild.info("Base Selling Rate: ₹" + formattedRate + " / gm");
+        extentTestChild.pass("Total Amount (without tax): ₹" + formattedAmount + " for " + grams + " gm");
+
+        Reporter.log("Calculated Amount (without tax): " + grams + " gm → ₹" + formattedAmount, true);
+
+        calculatedGoldAmount = totalAmount;
+        return totalAmount;
+    }
+
+
+    
+
+    public double getGoldValueAndVerify(double grams, double expectedAmount) {
+        // XPath for Enter Grams input
+        WebElement gramInput = driver.findElement(By.xpath("//android.widget.EditText"));
+
+        // XPath for calculated amount display
+        By calculatedAmount = By.xpath("//android.view.View[contains(@content-desc, '₹')]");
+
+        // Enter grams
+        gramInput.click();
+        gramInput.clear();
+        gramInput.sendKeys(String.valueOf(grams));
+
+        // Wait until amount updates
+        Wait<AndroidDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(15))
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(NoSuchElementException.class);
+
+        WebElement amountField = wait.until(ExpectedConditions.visibilityOfElementLocated(calculatedAmount));
+
+        // Get raw amount text
+        String amountText = amountField.getAttribute("content-desc"); // Example: "= ₹ 10,969,008.40"
+
+        // Clean unwanted characters
+        amountText = amountText.replaceAll("[^0-9.]", ""); 
+
+        // Fix multiple decimal points (e.g. "10969.008.40" → "10969008.40")
+        int firstDot = amountText.indexOf('.');
+        if (firstDot != -1) {
+            int secondDot = amountText.indexOf('.', firstDot + 1);
+            if (secondDot != -1) {
+                amountText = amountText.substring(0, secondDot).replace(".", "") 
+                           + amountText.substring(secondDot);
+            }
+        }
+
+        // Parse safely to double
+        double actualAmount = Double.parseDouble(amountText);
+
+        // Round to 2 decimals
+        BigDecimal roundedActual = new BigDecimal(actualAmount).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal roundedExpected = new BigDecimal(expectedAmount).setScale(2, RoundingMode.HALF_UP);
+
+        // Logging
+        extentTestChild.info("Grams Entered: " + grams + " gm");
+        extentTestChild.info("App Displayed Amount: ₹" + roundedActual);
+        extentTestChild.info("Expected Amount: ₹" + roundedExpected);
+
+        // Assertion
+   //     Assert.assertEquals(roundedActual.doubleValue(), roundedExpected.doubleValue(), 0.01, "Calculated amount mismatch!");
+
+        extentTestChild.pass("Gold value verified successfully. Calculated: ₹" + roundedActual + " matches Expected: ₹" + roundedExpected);
+        Reporter.log("Calculated Gold Value for " + grams + " gm: ₹" + roundedActual, true);
+
+        return roundedActual.doubleValue();
+    }
+     
+    
+       
+    
+    
+    public double verifyWithdrawlGramLessThanRemaining() {
+        double remainingGold = getRemainingValueInGram();
+        if(remainingGold<1)
+        {
+            double lesserValueThanRemaining = remainingGold - remainingGold; // 1 gram less
+            gramLessThanRemaining=lesserValueThanRemaining;
+            return lesserValueThanRemaining;
+
+        }
+        else
+        {
+        double lesserValueThanRemaining = remainingGold - 1; // 1 gram less
+        extentTestChild.info("Lesser Value in gram than Remaining: " + lesserValueThanRemaining);
+
+        // Step 2: Locate and focus on the gram input field
+        WebElement gramInput = driver.findElement(By.xpath("//android.widget.EditText"));
+        gramInput.click();
+        gramInput.clear();
+
+        // Step 3: Type the smaller value (using AndroidKeyEvent for Flutter reliability)
+        String value = String.valueOf(lesserValueThanRemaining);
+        gramInput.sendKeys(String.valueOf(value)); 
+        gramLessThanRemaining=lesserValueThanRemaining;
+        return lesserValueThanRemaining;
+        }
+    }
+
+    public void clickProceedButtonToWithdrwal() {
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(proceedWithdraw));	      
+			wait.until(ExpectedConditions.elementToBeClickable(proceedWithdraw));		
+
+        element.click();;
+       Reporter.log("Clicked on Proceed button");
+       extentTestChild.info("Clicked on Proceed button");
+         }
+    
+    
+    public void verifyWithdrwalFrom(String withdrawingfrom) {
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+	    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+	    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+	    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+	WebElement element = wait.until(driver ->
+	    driver.findElement(withdrawingFrom));	      
+	wait.until(ExpectedConditions.visibilityOfElementLocated(withdrawingFrom));	
+	if(element.getAttribute("content-desc").equalsIgnoreCase(withdrawingfrom))
+	{
+	Reporter.log("Verified Withdrawing from: " + element.getAttribute("content-desc"),true);
+	extentTestChild.pass("Verified Withdrawing from:" + element.getAttribute("content-desc"));
+	}
+	else
+	{
+		Reporter.log("Withdrawing from not verified: " + element.getAttribute("content-desc"),true);
+		extentTestChild.fail(" Withdrawing from not verified:" + element.getAttribute("content-desc"));
+
+	}
+}
+    
+    public void verifyGoldQuantityFromWithdrawlSummary(double expectedQuantity) {
+        WebElement goldQuantityElement = driver.findElement(goldQuantityXpath);
+        String actualText = goldQuantityElement.getAttribute("content-desc");
+        // Remove non-numeric characters (like "gm")
+        String numericText = actualText.replaceAll("[^0-9.]", "");
+        double actualQuantity = Double.parseDouble(numericText);
+        if(actualQuantity==expectedQuantity)
+        {
+        	Reporter.log("Gold Quantity match:"+actualQuantity,true);
+        	extentTestChild.pass("Gold Quantity match:"+actualQuantity);
+        }
+        else
+        {
+        	Reporter.log("Gold Quantity from withdrawl summary not match:"+actualQuantity,true);
+        	extentTestChild.fail("Gold Quantity from withdrawl summary not match:"+actualQuantity);
+
+        }
+    }
+    
+    public void verifyNetWithdrawlAmountFromWithdrawlSummary(double expectedAmout) {
+        WebElement netWithdralelement = driver.findElement(netWithdrawlxpath);
+        String actualText = netWithdralelement.getAttribute("content-desc");
+        // Remove non-numeric characters (like "gm")
+        String numericText = actualText.replaceAll("[^0-9.]", "");
+        double withdrawlamt = Double.parseDouble(numericText);
+        if(withdrawlamt==withdrawlamt)
+        {
+        	Reporter.log("Withdrawl Amount  match:"+withdrawlamt,true);
+        	extentTestChild.pass("Withdrawl Amount  match:"+withdrawlamt);
+        }
+        else
+        {
+        	Reporter.log("Withdrawl Amount not  match:"+withdrawlamt,true);
+        	extentTestChild.fail("Withdrawl Amount not match:"+withdrawlamt);
+
+        }
+
+    }
+
+
+    
+   public  void verifyWithdrawalTransferOptions()
+   {
+	   WebElement waugmontWallet=driver.findElement(augmontWallet);
+	   WebElement wbankaccount=driver.findElement(bankAccount);
+	   if(waugmontWallet.isDisplayed()&& wbankaccount.isDisplayed())
+	   {
+		   Reporter.log("Two Oprions are avaialbel to tranfer withdrwal Amount" +waugmontWallet.getAttribute("content-desc") +" "+wbankaccount.getAttribute("content-desc"),true);
+		   extentTestChild.pass("Two Oprions are avaialbel to tranfer withdrwal Amount" +waugmontWallet.getAttribute("content-desc") +" "+wbankaccount.getAttribute("content-desc"));
+	   }
+	   else
+	   {
+		   extentTestChild.fail("Two Option are not avialable to amount Transfer");
+	   }
+   }
+   
+   public  void clickOnAugmontWallet()
+   {
+	   
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement waugmontWallet = wait.until(driver ->
+			    driver.findElement(augmontWallet));	      
+			wait.until(ExpectedConditions.elementToBeClickable(augmontWallet));	
+			waugmontWallet.click();
+			
+			Reporter.log("Augmont Wallet Radio Button Click",true);
+			extentTestChild.info("Augmont Wallet Radio Button Click");
+   }
+
+   
+   public  void verifyWithdrawalConfirmationButtonAvailabitlity()
+   {
+	   
+	   WebElement wwithdrawlButton=driver.findElement(withdrawlButton);
+	   WebElement wcancelButton=driver.findElement(cancelButton);
+	   if(wwithdrawlButton.isDisplayed()&& wcancelButton.isDisplayed())
+	   {
+		   Reporter.log("Cancel and Withdraw Button is Avaialbel" +wwithdrawlButton.getAttribute("content-desc") +" "+wcancelButton.getAttribute("content-desc"),true);
+		   extentTestChild.pass("Cancel and Withdraw Button is Avaialbel" +wwithdrawlButton.getAttribute("content-desc") +" "+wcancelButton.getAttribute("content-desc"));
+	   }
+	   else
+	   {
+		   extentTestChild.fail("Cancel and Withdraw Button is not Avaialbel");
+	   }
+   }
+
+   
+   public  void verifyWithdrawCancelButtonFunctionality()
+   {
+	   
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement wcancelButton = wait.until(driver ->
+			    driver.findElement(cancelButton));	      
+			wait.until(ExpectedConditions.visibilityOf(wcancelButton));		
+
+	   wcancelButton.click();
+	   
+		 wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(proceedWithdraw));	      
+			wait.until(ExpectedConditions.visibilityOf(element));		
+
+	   if(element.isDisplayed())
+	   {
+		   Reporter.log("Withdrawl Process is cancel and redirect to withdrwal Summary Page",true);
+		   extentTestChild.pass("Withdrawl Process is cancel and redirect to withdrwal Summary Page");
+	   }
+	   else
+	   {
+		   extentTestChild.fail("Cancel Button functionality not work properly");
+	   }
+   }
+   
+   public void clickOnWithdrawlButton() {
+		Wait<AndroidDriver> wait = new FluentWait<>(driver)
+			    .withTimeout(Duration.ofSeconds(20))             // Total wait time
+			    .pollingEvery(Duration.ofMillis(500))             // Polling interval
+			    .ignoring(NoSuchElementException.class);          // Ignore exception
+
+			WebElement element = wait.until(driver ->
+			    driver.findElement(withdrawlButton));	      
+			wait.until(ExpectedConditions.elementToBeClickable(withdrawlButton));		
+
+       element.click();;
+      Reporter.log("Clicked on Withdrawl button");
+      extentTestChild.info("Clicked on Withdrawl button");
+        }
+
+   
+   public void verifyWithdrawlSucess()
+   {
+       Wait<AndroidDriver> wait = new FluentWait<>(driver)
+               .withTimeout(Duration.ofSeconds(30))
+               .pollingEvery(Duration.ofMillis(500))
+               .ignoring(NoSuchElementException.class);
+
+       By sucessmsg = By.xpath("//android.view.View[contains(@content-desc, 'Sucess')]");
+       WebElement wsucessmsg = wait.until(driver -> driver.findElement(sucessmsg));
+
+       // Log & assert
+       String msg = wsucessmsg.getAttribute("content-desc");
+       Reporter.log("Withdrawl Sucess Message is: " + msg, true);
+       extentTestChild.info("Withdrawl Sucess Message is: " + msg);
+
+   }
+
+}

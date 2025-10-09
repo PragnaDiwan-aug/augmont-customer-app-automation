@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  augmont-customer-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: augmont-customer-app
+    ports:
+      - "4723:4723"  # Appium server port
+      - "5900:5900"  # VNC port for debugging
+    volumes:
+      - ./reports:/app/reports
+      - ./test-output:/app/test-output
+      - ./screenshots:/app/screenshots
+    environment:
+      - PG=RazorPay  # Default payment gateway
+      - xmlFiles=testng.xml  # Default test suite
+    networks:
+      - augmont-network
+    privileged: true  # Required for Android emulator access
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["/entrypoint.sh"]
+
+  # Optional: Android emulator service (if you want to run emulator in Docker)
+  android-emulator:
+    image: budtmo/docker-android:emulator_11.0
+    container_name: android-emulator
+    ports:
+      - "5555:5555"  # ADB port
+    environment:
+      - EMULATOR_DEVICE=Samsung Galaxy S10
+      - WEB_VNC=true
+    volumes:
+      - android-emulator-data:/root
+    networks:
+      - augmont-network
+    privileged: true
+
+volumes:
+  android-emulator-data:
+
+networks:
+  augmont-network:
+    driver: bridge

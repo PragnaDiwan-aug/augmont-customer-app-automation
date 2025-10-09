@@ -1,0 +1,67 @@
+package com.augmont.tests;
+
+import org.testng.Reporter;
+
+import com.augmont.base.BaseTest;
+import com.augmont.objectpages.HomePage;
+import com.augmont.objectpages.PurchasePage;
+import com.augmont.objectpages.WithdrawlPage;
+
+public class WithdrawlTest extends BaseTest {
+	PurchasePage purchasePage=new PurchasePage();
+	HomePage homePage=new HomePage();
+	WithdrawlPage withdrawlPage=new WithdrawlPage();
+	
+	
+	public void withdrawlMethodUsingBankDeposit()
+	{
+		extentTestChild=extentTest.createNode("Verify Gold Withdrawal With Bank Deposit");
+		
+		Reporter.log("Verify Gold Withdrawal With Bank Deposit",true);
+		Reporter.log("-----------------------------------------------",true);
+		homePage.clickOnHomeMenu();
+		purchasePage.clickOnInvestmentAndEarnMore();
+		purchasePage.clickOnGoldInvestment();
+		withdrawlPage.clickWithdrawInvestment();
+		withdrawlPage.clickProceedButton();
+		withdrawlPage.clickBankDeposit();		
+		withdrawlPage.getTotalInvestmentAmount();
+		withdrawlPage.getTotalGoldValueInGram();
+		withdrawlPage.getAvailableForWithdraw();
+		withdrawlPage.getTotalBalance();
+		withdrawlPage.clickProceedButtonWithdraw();
+		withdrawlPage.getWithdrawingValueInGram();
+		withdrawlPage.getRemainingValueInGram();
+		withdrawlPage.verifyErrorWhenEnteredGramGreaterThanRemaining();
+		withdrawlPage.getSellingGoldRate();
+		withdrawlPage.calculateAmountFromGoldGramsWithoutTax(withdrawlPage.verifyWithdrawlGramLessThanRemaining());
+		withdrawlPage.getGoldValueAndVerify(withdrawlPage.verifyWithdrawlGramLessThanRemaining(),withdrawlPage.calculateAmountFromGoldGramsWithoutTax(withdrawlPage.verifyWithdrawlGramLessThanRemaining()));
+		withdrawlPage.verifyWithdrawlGramLessThanRemaining();
+		withdrawlPage.clickProceedButtonToWithdrwal();
+	}
+	
+	
+	public void verifyWithdrwalSummary()
+	{
+		extentTestChild=extentTest.createNode("Verify Withdrawl Summary");		
+		Reporter.log("Verify Withdrawl Summary",true);
+		Reporter.log("-----------------------------------------------",true);
+		withdrawlPage.verifyWithdrwalFrom("Gold Vault");
+		withdrawlPage.verifyGoldQuantityFromWithdrawlSummary(withdrawlPage.verifyWithdrawlGramLessThanRemaining());
+		withdrawlPage.verifyNetWithdrawlAmountFromWithdrawlSummary(withdrawlPage.calculateAmountFromGoldGramsWithoutTax(withdrawlPage.verifyWithdrawlGramLessThanRemaining()));
+		withdrawlPage.verifyWithdrawalTransferOptions();
+		withdrawlPage.clickProceedButtonToWithdrwal();	
+		
+	}
+
+	public void verifyWithdrawAndCancelButtonFunctionality()
+	{extentTestChild=extentTest.createNode("Verify Withdraw and Cancel Button Functioality");		
+	Reporter.log("Verify Withdraw and Cancel Button Functioality",true);
+	Reporter.log("-----------------------------------------------",true);
+		
+	}
+
+
+	
+	
+}
